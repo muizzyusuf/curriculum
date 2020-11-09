@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('dist/js/jquery.smartWizard.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +19,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('dist/css/smart_wizard_theme_arrows.css') }}" rel="stylesheet">
+
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
 </head>
 <body>
     <div id="app">
@@ -50,6 +56,13 @@
                                 </li>
                             @endif
                         @else
+
+                            <li class="nav-item">                            
+                                <a class="nav-link" href="{{ route('programs.index') }}">My Programs</a>
+                            </li>
+                            <li class="nav-item">                            
+                                <a class="nav-link" href="{{ route('courses.index') }}">My Courses</a>
+                            </li>
                             <li class="nav-item">                            
                                 <a class="nav-link" href="{{ url('/home') }}">Dashboard</a>
                             </li>
@@ -92,5 +105,6 @@
             </main>
         </div>
     </div>
+
 </body>
 </html>

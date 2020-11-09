@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class LearningActivity extends Model
 {
     use HasFactory;
+
+    protected $primaryKey ='l_activity_id';
+
+    public function learningOutcomes(){
+        return $this->belongsToMany('App\Models\LearningOutcome')->using('App\Models\OutcomeActivity');
+    }
 }

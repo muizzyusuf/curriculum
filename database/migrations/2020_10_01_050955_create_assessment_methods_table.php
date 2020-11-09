@@ -14,12 +14,14 @@ class CreateAssessmentMethodsTable extends Migration
     public function up()
     {
         Schema::create('assessment_methods', function (Blueprint $table) {
-            $table->unsignedBigInteger('l_outcome_id');
-            $table->string('assessment_method');
+            $table->bigIncrements('a_method_id');
+            $table->string('a_method');
+            $table->integer('weight');
+            $table->unsignedBigInteger('course_id');
             $table->timestamps();
 
-            $table->primary(['l_outcome_id','assessment_method']);
-            $table->foreign('l_outcome_id')->references('l_outcome_id')->on('learning_outcomes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
+            
         });
     }
 

@@ -14,12 +14,12 @@ class CreateLearningActivitiesTable extends Migration
     public function up()
     {
         Schema::create('learning_activities', function (Blueprint $table) {
-            $table->unsignedBigInteger('l_outcome_id');
+            $table->bigIncrements('l_activity_id');
             $table->string('l_activity');
+            $table->unsignedBigInteger('course_id'); 
             $table->timestamps();
 
-            $table->primary(['l_outcome_id','l_activity']);
-            $table->foreign('l_outcome_id')->references('l_outcome_id')->on('learning_outcomes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

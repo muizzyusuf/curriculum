@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class LearningOutcome extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'l_outcome_id';
+
+    public function assessmentMethods(){
+        return $this->belongsToMany('App\Models\AssessmentMethod', 'outcome_assessments','l_outcome_id', 'a_method_id')->using('App\Models\OutcomeAssessment')->withTimeStamps();
+    }
+
+    public function learningActivities(){
+        return $this->belongsToMany('App\Models\LearningActivity', 'outcome_activities','l_outcome_id', 'l_activity_id')->using('App\Models\OutcomeActivity')->withTimeStamps();
+    }
+
+    public function programLearningOutcomes(){
+        return $this->belongsToMany('App\Models\ProgramLearningOutcome', 'outcome_maps','l_outcome_id', 'pl_outcome_id')->using('App\Models\OutcomeMap')->withPivot('map_scale_value')->withTimeStamps();
+    }
 }

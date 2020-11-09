@@ -14,15 +14,17 @@ class CreateCoursesTable extends Migration
     public function up()
     {
         Schema::create('courses', function (Blueprint $table) {
+            $table->bigIncrements('course_id');
             $table->string('course_code');
+            $table->unsignedBigInteger('course_num');
             $table->string('course_title');
-            $table->unsignedBigInteger('program_id')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('program_id');
+            $table->integer('status');
+            $table->integer('assigned');
+            $table->string('type');
             $table->timestamps();
 
-            $table->primary('course_code');
-            $table->foreign('program_id')->references('program_id')->on('programs')->onUpdate('cascade')->onDelete('set null');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('program_id')->references('program_id')->on('programs')->onUpdate('cascade')->onDelete('cascade');
 
 
         });

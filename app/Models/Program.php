@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Program extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'program_id';
+
+    public function courses()
+    {
+        
+
+        return $this->hasMany('App\Models\Course');
+    }
 }

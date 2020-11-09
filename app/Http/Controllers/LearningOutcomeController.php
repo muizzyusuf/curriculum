@@ -12,6 +12,11 @@ class LearningOutcomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         //
@@ -36,6 +41,22 @@ class LearningOutcomeController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'l_outcome'=> 'required',
+            ]);
+
+        $lo = new LearningOutcome;
+        $lo->clo_shortphrase = $request->input('title');
+        $lo->l_outcome = $request->input('l_outcome');
+        $lo->course_id = $request->input('course_id');
+        
+        if($lo->save()){
+            $request->session()->flash('success', 'New course learning outcome added');
+        }else{
+            $request->session()->flash('error', 'There was an error adding the course learning outcome');
+        }
+        
+        return redirect()->route('courseWizard.step1', $request->input('course_id'));
     }
 
     /**
@@ -55,7 +76,7 @@ class LearningOutcomeController extends Controller
      * @param  \App\Models\LearningOutcome  $learningOutcome
      * @return \Illuminate\Http\Response
      */
-    public function edit(LearningOutcome $learningOutcome)
+    public function edit($learningOutcome)
     {
         //
     }
@@ -67,9 +88,24 @@ class LearningOutcomeController extends Controller
      * @param  \App\Models\LearningOutcome  $learningOutcome
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LearningOutcome $learningOutcome)
+    public function update(Request $request, $l_outcome_id)
     {
         //
+        $this->validate($request, [
+            'l_outcome'=> 'required',
+            ]);
+
+        $lo = LearningOutcome::where('l_outcome_id', $l_outcome_id)->first();
+        $lo->l_outcome = $request->input('l_outcome');
+        $lo->clo_shortphrase = $request->input('title');
+        
+        if($lo->save()){
+            $request->session()->flash('success', 'Course learning outcome updated');
+        }else{
+            $request->session()->flash('error', 'There was an error updating the course learning outcome');
+        }
+        
+        return redirect()->route('courseWizard.step1', $request->input('course_id'));
     }
 
     /**
@@ -78,8 +114,17 @@ class LearningOutcomeController extends Controller
      * @param  \App\Models\LearningOutcome  $learningOutcome
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LearningOutcome $learningOutcome)
+    public function destroy(Request $request, $l_outcome_id)
     {
         //
+        $lo = LearningOutcome::where('l_outcome_id', $l_outcome_id)->first();
+
+
+        if($lo->delete()){
+            $request->session()->flash('success','Course learning outcome has been deleted');
+        }else{
+            $request->session()->flash('error', 'There was an error deleting the course learning outcome');
+        }
+        return redirect()->route('courseWizard.step1', $request->input('course_id'));
     }
 }

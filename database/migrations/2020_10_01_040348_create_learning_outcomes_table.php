@@ -15,12 +15,12 @@ class CreateLearningOutcomesTable extends Migration
     {
         Schema::create('learning_outcomes', function (Blueprint $table) {
             $table->bigIncrements('l_outcome_id');
+            $table->string('clo_shortphrase')->nullable();
             $table->string('l_outcome');
-            $table->string('course_code');
+            $table->unsignedBigInteger('course_id');
             $table->timestamps();
 
-            $table->foreign('course_code')->references('course_code')->on('courses')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreign('course_id')->references('course_id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            MappingScaleSeeder::class,
         ]);
     }
 }

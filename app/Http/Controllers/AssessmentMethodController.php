@@ -12,6 +12,10 @@ class AssessmentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         //
@@ -36,6 +40,25 @@ class AssessmentMethodController extends Controller
     public function store(Request $request)
     {
         //
+
+        $this->validate($request, [
+            'a_method'=> 'required',
+            'weight'=> 'required',
+            ]);
+
+        $am = new AssessmentMethod;
+        $am->a_method = $request->input('a_method');
+        $am->weight = $request->input('weight');
+        $am->course_id = $request->input('course_id');
+        
+        if($am->save()){
+            $request->session()->flash('success', 'New student assessment method added');
+        }else{
+            $request->session()->flash('error', 'There was an error adding the student assessment method');
+        }
+        
+        
+        return redirect()->route('courseWizard.step2', $request->input('course_id'));
     }
 
     /**
@@ -55,9 +78,10 @@ class AssessmentMethodController extends Controller
      * @param  \App\Models\AssessmentMethod  $assessmentMethod
      * @return \Illuminate\Http\Response
      */
-    public function edit(AssessmentMethod $assessmentMethod)
+    public function edit($assessmentMethod)
     {
         //
+    
     }
 
     /**
@@ -67,9 +91,27 @@ class AssessmentMethodController extends Controller
      * @param  \App\Models\AssessmentMethod  $assessmentMethod
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AssessmentMethod $assessmentMethod)
+    public function update(Request $request, $a_method_id)
     {
         //
+        $this->validate($request, [
+            'a_method'=> 'required',
+            'weight'=> 'required',
+            ]);
+
+        $am = AssessmentMethod::where('a_method_id', $a_method_id)->first();
+        $am->a_method = $request->input('a_method');
+        $am->weight = $request->input('weight');
+        $am->course_id = $request->input('course_id');
+        
+        if($am->save()){
+            $request->session()->flash('success', 'New student assessment method added');
+        }else{
+            $request->session()->flash('error', 'There was an error adding the student assessment method');
+        }
+        
+        
+        return redirect()->route('courseWizard.step2', $request->input('course_id'));
     }
 
     /**
@@ -78,8 +120,18 @@ class AssessmentMethodController extends Controller
      * @param  \App\Models\AssessmentMethod  $assessmentMethod
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AssessmentMethod $assessmentMethod)
+    public function destroy(Request $request, $a_method_id)
     {
-        //
+        $am = AssessmentMethod::where('a_method_id', $a_method_id)->first();
+        $course_id = $request->input('course_id');
+
+
+        if($am->delete()){
+            $request->session()->flash('success','Student assessment method has been deleted');
+        }else{
+            $request->session()->flash('error', 'There was an error deleting the student assessment method');
+        }
+        return redirect()->route('courseWizard.step2', $course_id);
     }
+    
 }

@@ -12,6 +12,12 @@ class LearningActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         //
@@ -36,6 +42,21 @@ class LearningActivityController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'l_activity'=> 'required',
+            ]);
+
+        $la = new LearningActivity;
+        $la->l_activity = $request->input('l_activity');
+        $la->course_id = $request->input('course_id');
+        
+        if($la->save()){
+            $request->session()->flash('success', 'New teaching/learning activity added');
+        }else{
+            $request->session()->flash('error', 'There was an error adding the teaching/learning activity');
+        }
+        
+        return redirect()->route('courseWizard.step3', $request->input('course_id'));
     }
 
     /**
@@ -78,8 +99,18 @@ class LearningActivityController extends Controller
      * @param  \App\Models\LearningActivity  $learningActivity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LearningActivity $learningActivity)
+    public function destroy(Request $request, $l_activity_id)
     {
         //
+        $la = learningActivity::where('l_activity_id', $l_activity_id)->first();
+        $course_id = $request->input('course_id');
+
+
+        if($la->delete()){
+            $request->session()->flash('success','Teaching/learning activity has been deleted');
+        }else{
+            $request->session()->flash('error', 'There was an error deleting the teaching/learning activity');
+        } 
+        return redirect()->route('courseWizard.step3', $request->input('course_id'));
     }
 }
