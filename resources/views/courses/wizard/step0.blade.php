@@ -10,6 +10,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -54,12 +58,11 @@
                     </tbody>
                 </table>
             </div>
-
+            
             <div class="card">
 
-
-
                 <div class="card-body">
+    
 
                     <div class="row mb-5">
                         <div class="col">
@@ -77,7 +80,7 @@
                         <div class="col">
                             <!-- Assign instructor button  -->
                             <button type="button" class="btn btn-outline-primary btn-sm ml-2 float-left" style="width:200px"
-                                data-toggle="modal" data-target="#assignInstructorModal">Instructor</button>
+                                data-toggle="modal" data-target="#assignInstructorModal">Collaborators</button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="assignInstructorModal" tabindex="-1" role="dialog"

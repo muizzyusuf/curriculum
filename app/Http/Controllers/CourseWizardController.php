@@ -23,7 +23,8 @@ class CourseWizardController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
+        $this->middleware('courseWizard');
     }
 
     public function step0($course_id)
@@ -31,9 +32,11 @@ class CourseWizardController extends Controller
         //
         
         $course =  Course::where('course_id', $course_id)->first();
-        $courseUsers = CourseUser::join('users','course_users.user_id',"=","users.id")
+        $courseUsers = Course::join('course_users','courses.course_id',"=","course_users.course_id")
+                                ->join('users','course_users.user_id',"=","users.id")
                                 ->select('users.email')
-                                ->where('course_users.program_id','=',$course->program_id)->get();
+                                ->where('courses.program_id','=',$course->program_id)->get();
+        
 
         return view('courses.wizard.step0')->with('course', $course)->with('courseUsers', $courseUsers);
         
@@ -100,7 +103,9 @@ class CourseWizardController extends Controller
         $l_outcomes = LearningOutcome::where('course_id', $course_id)->get();
         $course =  Course::where('course_id', $course_id)->first();
         $pl_outcomes = ProgramLearningOutcome::where('program_id', $course->program_id)->get();
-        $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        // $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        $mappingScales = MappingScale::join('mapping_scale_programs', 'mapping_scales.map_scale_id', "=", 'mapping_scale_programs.map_scale_id')
+                            ->where('mapping_scale_programs.program_id', $course->program_id)->get();
         
 
         return view('courses.wizard.step5')->with('l_outcomes', $l_outcomes)->with('course', $course)->with('pl_outcomes',$pl_outcomes)->with('mappingScales', $mappingScales);
@@ -115,7 +120,9 @@ class CourseWizardController extends Controller
         $l_activities = LearningActivity::where('course_id', $course_id)->get();
         $l_outcomes = LearningOutcome::where('course_id', $course_id)->get();
         $pl_outcomes = ProgramLearningOutcome::where('program_id', $course->program_id)->get();
-        $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        // $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        $mappingScales = MappingScale::join('mapping_scale_programs', 'mapping_scales.map_scale_id', "=", 'mapping_scale_programs.map_scale_id')
+                            ->where('mapping_scale_programs.program_id', $course->program_id)->get();
         $ploCategories = PLOCategory::where('program_id', $course->program_id)->get();
 
         $outcomeActivities = LearningActivity::join('outcome_activities','learning_activities.l_activity_id','=','outcome_activities.l_activity_id')

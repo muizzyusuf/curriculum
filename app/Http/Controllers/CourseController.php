@@ -17,13 +17,15 @@ use App\Models\MappingScale;
 use App\Models\PLOCategory;
 use PDF;
 
+
 use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
+        $this->middleware('course')->only([ 'show', 'pdf', 'edit', 'submit', 'outcomeDetails' ]);
     }
     /**
      * Display a listing of the resource.
@@ -41,15 +43,17 @@ class CourseController extends Controller
         $activeCourses = User::join('course_users', 'users.id', '=', 'course_users.user_id')
                 ->join('courses', 'course_users.course_id', '=', 'courses.course_id')
                 ->join('programs', 'courses.program_id', '=', 'programs.program_id')
-                ->select('course_users.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
+                ->select('courses.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
                 ->where('course_users.user_id','=',Auth::id())->where('courses.status','=', -1)
+                ->where('programs.status','=',1)
                 ->get();
 
         $archivedCourses = User::join('course_users', 'users.id', '=', 'course_users.user_id')
                 ->join('courses', 'course_users.course_id', '=', 'courses.course_id')
                 ->join('programs', 'courses.program_id', '=', 'programs.program_id')
-                ->select('course_users.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
+                ->select('courses.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
                 ->where('course_users.user_id','=',Auth::id())->where('courses.status','=', 1)
+                ->where('programs.status','=',1)
                 ->get();
 
         return view('courses.index')->with('user', $user)->with('activeCourses', $activeCourses)->with('archivedCourses', $archivedCourses);
@@ -87,6 +91,7 @@ class CourseController extends Controller
         $course->course_num = $request->input('course_num');
         $course->course_code =  strtoupper($request->input('course_code'));
         $course->status = -1;
+        $course->required = $request->input('required');
         $course->type = $request->input('type');
 
         if($request->input('type') == 'assigned'){
@@ -108,7 +113,6 @@ class CourseController extends Controller
             $user = User::where('id', $request->input('user_id'))->first();
             $courseUser = new CourseUser;
             $courseUser->course_id = $course->course_id;
-            $courseUser->program_id = $course->program_id;
             $courseUser->user_id = $user->id;
             if($courseUser->save()){
                 $request->session()->flash('success', 'New course added');
@@ -136,7 +140,9 @@ class CourseController extends Controller
         $l_activities = LearningActivity::where('course_id', $course_id)->get();
         $l_outcomes = LearningOutcome::where('course_id', $course_id)->get();
         $pl_outcomes = ProgramLearningOutcome::where('program_id', $course->program_id)->get();
-        $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        // $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        $mappingScales = MappingScale::join('mapping_scale_programs', 'mapping_scales.map_scale_id', "=", 'mapping_scale_programs.map_scale_id')
+                                    ->where('mapping_scale_programs.program_id', $course->program_id)->get();
         $ploCategories = PLOCategory::where('program_id', $course->program_id)->get();
 
         $outcomeActivities = LearningActivity::join('outcome_activities','learning_activities.l_activity_id','=','outcome_activities.l_activity_id')
@@ -204,6 +210,7 @@ class CourseController extends Controller
         $course->course_num = $request->input('course_num');
         $course->course_code = strtoupper($request->input('course_code'));
         $course->course_title = $request->input('course_title');
+        $course->required = $request->input('required');
         
         if($course->save()){
             $request->session()->flash('success', 'Course updated');
@@ -342,7 +349,9 @@ class CourseController extends Controller
         $l_activities = LearningActivity::where('course_id', $course_id)->get();
         $l_outcomes = LearningOutcome::where('course_id', $course_id)->get();
         $pl_outcomes = ProgramLearningOutcome::where('program_id', $course->program_id)->get();
-        $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        // $mappingScales = MappingScale::where('program_id', $course->program_id)->get();
+        $mappingScales = MappingScale::join('mapping_scale_programs', 'mapping_scales.map_scale_id', "=", 'mapping_scale_programs.map_scale_id')
+                                    ->where('mapping_scale_programs.program_id', $course->program_id)->get();
         $ploCategories = PLOCategory::where('program_id', $course->program_id)->get();
 
         $outcomeActivities = LearningActivity::join('outcome_activities','learning_activities.l_activity_id','=','outcome_activities.l_activity_id')

@@ -13,6 +13,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to setup this program project!
+              </div>
+              
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">

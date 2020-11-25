@@ -8590,13 +8590,12 @@
 </head>
 
 <body>
-    <div id="app">
-        <div class="container">
-            <main class="py-4">
+    
+        
+            
 
-                <div>
-                    <div class="row justify-content-center">
-                        <div class="col-md-12">
+                
+                        <div>
                             <div class="mt-2 mb-3">
                                 <h2>Course Summary</h2>
                                 <h5>Course: {{$course->course_code}}{{$course->course_num}} - {{$course->course_title}}
@@ -8614,7 +8613,7 @@
                                     <th style="background-color: #999999;">Course Learning Outcomes for {{$course->course_code}}{{$course->course_num}}</th>
                                 </tr>
                                 <tr >
-                                    <td style="padding-left: 48px; padding-right: 48px">
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         <p>The course learning outcomes used in this course are listed below.</p>
                                         <table class="table table-bordered table-sm  mt-3">
 
@@ -8645,19 +8644,20 @@
                                         </table>
                                     </td>
                                 </tr>
-
-                                <tr> <td> <br> </td> </tr>
-
+                            </table>    
+                               
+                            <table style="margin-top:15px" class="table">
                                 <tr>
                                     <th style="background-color: #999999;">Student Assessment Methods for {{$course->course_code}}{{$course->course_num}}</th>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 48px; padding-right: 48px">
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         <p>Student assessment methods used in this course are listed below.</p>
                                         <table class="table table-bordered table-sm  mt-3">
 
-                                            @if(count($a_methods)<1) <tr>
-                                                <th style="background-color: #e3e3e3;" class="table-light">There are no student assessment methods set for
+                                            @if(count($a_methods)<1) 
+                                                <tr>
+                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no student assessment methods set for
                                                     this course.</th>
                                                 </tr>
 
@@ -8681,14 +8681,14 @@
                                         </table>
                                     </td>
                                 </tr>
-
-                                <tr> <td> <br> </td> </tr>
-
+                            </table>
+                               
+                            <table style="margin-top:15px" class="table">
                                 <tr>
                                     <th style="background-color: #999999;">Teaching and Learning Activities for {{$course->course_code}}{{$course->course_num}}</th>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 48px; padding-right: 48px">
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         <p>Teaching and Learning Activities description goes here.</p>
 
                                         <table class="table table-bordered table-sm mt-3">
@@ -8715,14 +8715,70 @@
                                         </table>
                                     </td>
                                 </tr>
+                            </table>
 
-                                <tr> <td> <br> </td> </tr>
+                            <table style="margin-top:15px" class="table">
+                                <tr>
+                                    <th style="background-color: #999999;">Mapping of {{$course->course_code}}{{$course->course_num}} CLOs to Teaching and Learning Activities & Assessment Methods</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 24px; padding-right: 24px">
+                                        <p>By the end of the course, students are expected to learn the following outcomes.</p>
 
+                                        <table class="table table-bordered table-sm mt-3">
+
+                                            @if(count($pl_outcomes)<1) 
+                                                <tr>
+                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no program learning outcomes set for this course.</th>
+                                                </tr>
+
+                                            @else
+
+                                            <tr>
+                                                <th class="table-light"></th>
+                                                <th class="table-light">Course Learning Outcomes</th>
+                                                <th class="table-light">Student Assessment Method</th>
+                                                <th class="table-light">Teaching and Learning Activity</th>
+                                            </tr>
+                                                @for($i = 0; $i < count($l_outcomes); $i++)                               
+                                                    <tr>
+                                                        <td style="width:5%" >{{$i+1}}</td>
+                                                        <td>{{$l_outcomes[$i]->l_outcome}}</td>
+                                                        <td>
+                                                            @foreach($outcomeAssessments as $oa)
+                                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
+                                                                    {{$oa->a_method}}<br>
+                
+                                                                @endif
+                
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            @foreach($outcomeActivities as $oa)
+                                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
+                                                                    {{$oa->l_activity}}<br>
+                
+                                                                @endif
+                
+                                                            @endforeach
+                
+                                                        </td>
+                                                    </tr>
+                                                @endfor
+
+                                            @endif
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                                
+                            <table style="margin-top:15px" class="table">
                                 <tr>
                                     <th style="background-color: #999999;">Program Learning Outcomes for: {{$program->program}}</th>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 48px; padding-right: 48px">
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         <p>Program learning outcomes are listed below.</p>
 
                                         <table class="table table-bordered table-sm mt-3">
@@ -8764,19 +8820,18 @@
                                         </table>
                                     </td>
                                 </tr>
-
-                                <tr> <td> <br> </td> </tr>
-
+                            </table>
+                                
+                            <table style="margin-top:15px" class="table">
                                 <tr>
-                                    <th style="background-color: #999999;">Course Outcome Mapping for {{$course->course_code}}{{$course->course_num}}</th>
+                                    <th style="background-color: #999999;">Mapping of CLOs to PLOs for {{$course->course_code}}{{$course->course_num}}</th>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 48px; padding-right: 48px">
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         @if(count($mappingScales)>0)
                                             <p>The following are the mapping scale levels used to indicate the degree to which a program-level learning outcome is addressed by a particular course outcome.</p>
 
-                                                <div class="container row mt-3 mb-2">
-                                                    <div class="col">
+                                                
                                                         <table class="table table-bordered table-sm">
                                                             <thead>
                                                                 <tr>
@@ -8799,8 +8854,7 @@
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
-                                                    </div>
-                                                </div>
+                                                  
                                         @else
 
                                             <table class="table table-bordered table-sm">
@@ -8810,7 +8864,10 @@
                                             </table>
 
                                         @endif
-
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 24px; padding-right: 24px">
                                         <p>This chart shows the alignment of course outcomes to program-level learning
                                         outcomes. Program-level learning outcomes and the mapping scale are listed below
                                         the chart.</p>
@@ -8885,13 +8942,11 @@
                             
                         </div>
 
-                    </div>
+                    
 
-                </div>
-
-            </main>
-        </div>
-    </div>
+            
+       
+    
 </body>
 
 </html>

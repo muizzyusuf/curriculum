@@ -25,26 +25,21 @@ class UserSeeder extends Seeder
         $userRole = Role::where('role','user')->first();
 
         $admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@admin.com',
+            'name' => 'Muizz Admin',
+            'email' => 'abdelmuizz.yusuf@hotmail.com',
             'password' => Hash::make('password'), 
         ]);
 
-        $user1 = User::create([
-            'name' => 'Generic User1',
-            'email' => 'user1@user.com',
+        $user = User::create([
+            'name' => 'Muizz User',
+            'email' => 'abdelmuizz.yusuf@gmail.com',
             'password' => Hash::make('password'), 
         ]);
 
-        $user2 = User::create([
-            'name' => 'Generic User2',
-            'email' => 'user2@user.com',
-            'password' => Hash::make('password'), 
-        ]);
 
         $admin->roles()->attach($adminRole);
-        $user1->roles()->attach($userRole);
-        $user2->roles()->attach($userRole);
+        $admin->roles()->attach($userRole);
+        $user->roles()->attach($userRole);
 
 
     }

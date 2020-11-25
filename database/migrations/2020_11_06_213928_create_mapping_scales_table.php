@@ -19,10 +19,8 @@ class CreateMappingScalesTable extends Migration
             $table->string('abbreviation');
             $table->text('description');
             $table->char('colour', 7);
-            $table->unsignedBigInteger('program_id');
             $table->timestamps();
 
-            $table->foreign('program_id')->references('program_id')->on('programs')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

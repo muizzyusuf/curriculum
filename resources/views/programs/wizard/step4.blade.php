@@ -13,6 +13,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to setup this program project!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -37,6 +41,7 @@
             <div class="card">
 
                 <div class="card-body">
+                    <p class="form-text text-muted">In a program project, the courses to be mapped are defined by the program administrator based upon the goals and needs of the project.</p>
 
                     <div id="courses">
                         <div class="row">
@@ -60,6 +65,7 @@
                                             <tr>
                                                 <td>{{$course->course_code}}{{$course->course_num}} -
                                                     {{$course->course_title}}
+                                                    <p class="form-text text-muted">@if($course->required == 1)Required @else Not Required @endif</p>
                                                 </td>
                                                 <td>
                                                     @if($course->assigned == -1)
@@ -182,6 +188,44 @@
                                                                             </div>
                                                                         </div>
 
+                                                                        <div class="form-group row">
+                                                                            <label for="required"
+                                                                                class="col-md-2 col-form-label text-md-right">Required</label>
+                                                                            <div class="col-md-6">
+                                                                                
+                                                                                    @if($course->required == -1)
+                                                                                        <div class="form-check ">
+                                                                                            <label class="form-check-label">
+                                                                                                <input type="radio" class="form-check-input" name="required" value="1" required>
+                                                                                                Required
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="form-check">
+                                                                                            <label class="form-check-label">
+                                                                                                <input type="radio" class="form-check-input" name="required" value="-1" checked>
+                                                                                                Not Required
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="form-check ">
+                                                                                            <label class="form-check-label">
+                                                                                                <input type="radio" class="form-check-input" name="required" value="1" checked required>
+                                                                                                Required
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="form-check">
+                                                                                            <label class="form-check-label">
+                                                                                                <input type="radio" class="form-check-input" name="required" value="-1" >
+                                                                                                Not Required
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                    <small class="form-text text-muted">
+                                                                                        Is this course required by the program?
+                                                                                    </small>    
+                                                                            </div>
+                                                                        </div>
+
                                                                         <input type="hidden" class="form-input"
                                                                             name="program_id"
                                                                             value={{$program->program_id}}>
@@ -219,20 +263,18 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <div class="card-body">
-                                                                <table class="table table-borderless">
-                                                                    @if(count($courseUsers)<1)
-                                                                        <tr class="table-active">
-                                                                            <th colspan="2">There are no Instructors assigned to this course.</th>
-                                                                        </tr>
-                            
-                                                                    @else
+                                                                <div class="container">
+                                                                    <p class="form-text text-muted"> To assign an instructor to this course, 
+                                                                        input the email of a registered user of this application and they will recieve an email notifying them that they have been assigned to map this course. </p>
+                                                                    <table class="table table-borderless">
                             
                                                                         <tr class="table-active">
                                                                             <th colspan="2">Instructor</th>
                                                                         </tr>
-                                                                        <div class="card-body">
+                                                                        <div>
                                                                             @foreach($courseUsers as $instructor)
+                                                                           
+                                                                                @if($course->course_id == $instructor->course_id)
                                                                                 <tr>
                                                                                     <td>{{$instructor->email}}</td>
                                                                                     <td>
@@ -245,11 +287,11 @@
                                                                                         </form>   
                                                                                     </td>
                                                                                 </tr>
+                                                                                @endif
                                                                             @endforeach
                                                                         </div>
                             
-                                                                    @endif
-                                                                </table>    
+                                                                    </table>    
                                                                 </div>
 
                                                                 <form method="POST" action="{{route('courses.assign', $course->course_id)}}">
@@ -389,6 +431,28 @@
                                                 @enderror
                                             </div>
                                         </div>
+
+                                        <div class="form-group row">
+                                            <label for="required" class="col-md-2 col-form-label text-md-right">Required</label>
+                                            <div class="col-md-6">
+                            
+                                              <div class="form-check ">
+                                                <label class="form-check-label">
+                                                  <input type="radio" class="form-check-input" name="required" value="1" required>
+                                                  Required
+                                                </label>
+                                              </div>
+                                              <div class="form-check">
+                                                <label class="form-check-label">
+                                                  <input type="radio" class="form-check-input" name="required" value="-1">
+                                                  Not Required
+                                                </label>
+                                              </div>
+                                              <small class="form-text text-muted">
+                                                Is this course required by the program?
+                                            </small>   
+                                            </div>
+                                          </div>
 
                                         <input type="hidden" class="form-check-input" name="program_id"
                                             value={{$program->program_id}}>

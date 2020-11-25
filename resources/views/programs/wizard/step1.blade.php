@@ -13,6 +13,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to setup this program project!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -198,7 +202,7 @@
                                     @else
 
                                         <tr class="table-active">
-                                            <th colspan="2">Administrators</th>
+                                            <th colspan="2">Collaborators</th>
                                         </tr>
                                         <div class="card-body">
                                             @foreach($programUsers as $admin)
@@ -230,7 +234,7 @@
 
                     <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal"
                         data-target="#addAdminModal">
-                        ＋ Add Administrator
+                        ＋ Add Collaborator
                     </button>
 
                     <!-- Modal -->
@@ -239,7 +243,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addAdminModalLabel">Add Administrator</h5>
+                                    <h5 class="modal-title" id="addAdminModalLabel">Add Collaborator</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -249,7 +253,9 @@
                                     @csrf
 
                                     <div class="modal-body">
-
+                                        <p class="form-text text-muted">To add a collaborator for this program project, input the email of a registered user of this application and they will recieve an email notifying them that they
+                                             have been made a collaborator of a program project.
+                                        </p>
 
                                         <div class="form-group row">
                                             <label for="email" class="col-md-2 col-form-label text-md-right">Email
@@ -275,7 +281,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary col-2 btn-sm"
                                             data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
+                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
                                     </div>
                                 </form>
                             </div>

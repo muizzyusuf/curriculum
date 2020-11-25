@@ -10,6 +10,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -58,6 +62,8 @@
             <div class="card">
 
                 <div class="card-body">
+                    <p class="form-text text-muted">On	this	page,	you	can add	or	delete the teaching	and	learning	activities you	use	in	your	
+                        course.</p>
 
                     <div id="admins">
                         <div class="row">
@@ -75,7 +81,7 @@
                                         <tr class="table-active">
                                             <th colspan="2">Teaching and Learning Activities</th>
                                         </tr>
-                                        <div class="card-body">
+                                       
                                             @foreach($l_activities as $l_activity)
 
                                             <tr>
@@ -92,7 +98,7 @@
 
                                             @endforeach
 
-                                        </div>
+                                        
 
                                     @endif
                                 </table>

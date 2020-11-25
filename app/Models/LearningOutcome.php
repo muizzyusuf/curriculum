@@ -11,6 +11,10 @@ class LearningOutcome extends Model
 
     protected $primaryKey = 'l_outcome_id';
 
+    public function course(){
+        return $this->belongsTo('App\Models\Course');
+    }
+
     public function assessmentMethods(){
         return $this->belongsToMany('App\Models\AssessmentMethod', 'outcome_assessments','l_outcome_id', 'a_method_id')->using('App\Models\OutcomeAssessment')->withTimeStamps();
     }

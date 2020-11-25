@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MappingScale;
+use App\Models\MappingScaleProgram;
 use Illuminate\Http\Request;
 
 class MappingScaleController extends Controller
@@ -14,7 +15,7 @@ class MappingScaleController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     
     public function index()
@@ -55,10 +56,14 @@ class MappingScaleController extends Controller
         $ms->abbreviation = $request->input('abbreviation');
         $ms->description = $request->input('description');
         $ms->colour = $request->input('colour');
-        $ms->program_id = $request->input('program_id');
         $ms->save();
+
         
-        if($ms->save()){
+        $msp = new MappingScaleProgram;
+        $msp->map_scale_id = $ms->map_scale_id;
+        $msp->program_id = $request->input('program_id');
+        
+        if($msp->save()){
             $request->session()->flash('success', 'Mapping scale level added');
         }else{
             $request->session()->flash('error', 'There was an error adding the mapping scale level');
@@ -113,7 +118,6 @@ class MappingScaleController extends Controller
         $ms->abbreviation = $request->input('abbreviation');
         $ms->description = $request->input('description');
         $ms->colour = $request->input('colour');
-        $ms->save();
         
         if($ms->save()){
             $request->session()->flash('success', 'Mapping scale level updated');
@@ -133,13 +137,25 @@ class MappingScaleController extends Controller
     public function destroy(Request $request, $map_scale_id)
     {
         //
+        if($map_scale_id == 1 || $map_scale_id == 2 || $map_scale_id == 3){
+            $msp = MappingScaleProgram::where('program_id', $request->input('program_id'))
+                                        ->where('map_scale_id', $map_scale_id);
+            if($msp->delete()){
+                $request->session()->flash('success', 'Mapping scale level deleted');
+            }else{
+                $request->session()->flash('error', 'There was an error deleting the mapping scale level');
+            }
 
-        $ms = MappingScale::where('map_scale_id', $map_scale_id)->first();
+        }else{    
+
+            $ms = MappingScale::where('map_scale_id', $map_scale_id)->first();
         
-        if($ms->delete()){
-            $request->session()->flash('success', 'Mapping scale level deleted');
-        }else{
-            $request->session()->flash('error', 'There was an error deleting the mapping scale level');
+            if($ms->delete()){
+                $request->session()->flash('success', 'Mapping scale level deleted');
+            }else{
+                $request->session()->flash('error', 'There was an error deleting the mapping scale level');
+            }
+
         }
         
         return redirect()->route('programWizard.step3', $request->input('program_id'));
@@ -148,33 +164,34 @@ class MappingScaleController extends Controller
     public function default(Request $request)
     {
         //
-        $ms = MappingScale::where('program_id', $request->input('program_id'))->delete();
+        $msp = MappingScaleProgram::where('program_id',  $request->input('program_id') )->get();
+        //dd($msp);
 
-        $ms1 = new MappingScale;
-        $ms1->title = "Introduced";
-        $ms1->abbreviation = "I";
-        $ms1->description = "Key ideas, concepts or skills related to the learning outcome are demonstrated at an introductory level. Learning activities focus on basic knowledge, skills, and/or competencies and entry-level complexity.";
-        $ms1->colour = "#0065bd";
-        $ms1->program_id = $request->input('program_id');
-        $ms1->save();
+        foreach($msp as $m){
+            $ms = MappingScale::where('map_scale_id', $m->map_scale_id)->first();
+            if($m->map_scale_id == 1 || $m->map_scale_id == 2 || $m->map_scale_id == 3){
+                $ms->programs()->detach($request->input('program_id'));
+            }else{
+                $ms->delete();
+            }
+        }
 
-        $ms2 = new MappingScale;
-        $ms2->title = "Developing";
-        $ms2->abbreviation = "D";
-        $ms2->description = "Learning outcome is reinforced with feedback; students demonstrate the outcome at an increasing level of proficiency. Learning activities concentrate on enhancing and strengthening existing knowledge and skills as well as expanding complexity.";
-        $ms2->colour = "#1aa7ff";
-        $ms2->program_id = $request->input('program_id');;
-        $ms2->save();
+        $msp1 = new MappingScaleProgram;
+        $msp1->map_scale_id = 1;
+        $msp1->program_id = $request->input('program_id');
+        $msp1->save();
 
-        $ms3 = new MappingScale;
-        $ms3->title = "Advanced";
-        $ms3->abbreviation = "A";
-        $ms3->description = "Students demonstrate the learning outcomes with a high level of independence, expertise and sophistication expected upon graduation. Learning activities focus on and integrate the use of content or skills in multiple.";
-        $ms3->colour = "#80bdff";
-        $ms3->program_id = $request->input('program_id');;
+        $msp2 = new MappingScaleProgram;
+        $msp2->map_scale_id = 2;
+        $msp2->program_id = $request->input('program_id');
+        $msp2->save();
+
+        $msp3 = new MappingScaleProgram;
+        $msp3->map_scale_id = 3;
+        $msp3->program_id = $request->input('program_id');
         
-        if($ms3->save()){
-            $request->session()->flash('success', 'Plo cateogry deleted');
+        if($msp3->save()){
+            $request->session()->flash('success', 'default mapping scale value set');
         }else{
             $request->session()->flash('error', 'There was an error deleting the plo category');
         }

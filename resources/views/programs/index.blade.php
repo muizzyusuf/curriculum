@@ -5,6 +5,13 @@
 <div class="row justify-content-center">
   <div class=" col-md-10">
     <h1>Current Programs</h1>
+    <p class="form-text text-muted">Program projects you manage are listed below. The list of program projects includes projects that you have created or are assigned to as an
+      administrator. From this list, you can choose the progam project you want to view its details.</p>
+    <p class="form-text text-muted"><i>Note:</i> If you would like to create a course and map it to actual program-level learning outcomes that you would like to input; create a program, 
+      input the PLOs, create the course and assign it to yourself to be mapped. Then proceed to My Courses and map the course.</p>
+  
+
+
     <div class="card">
       @if(count($programs)>0)
       <table class="table">
@@ -92,20 +99,22 @@
               </div>
 
               <div class="form-group row">
-                <label for="faculty" class="col-md-2 col-form-label text-md-right">Faculty</label>
+                <label for="faculty" class="col-md-2 col-form-label text-md-right">Faculty/School</label>
 
                 <div class="col-md-8">
-                  <select id='faculty' class="custom-select" name="faculty" onchange="department()" required>
+                  <select id='faculty' class="custom-select" name="faculty" required>
                     <option disabled selected hidden>Open this select menu</option>
-                    <option value="Applied Science">Applied Science</option>
-                    <option value="Education">Education</option>
-                    <option value="Arts and Social Sciences">Arts and Social Sciences</option>
-                    <option value="Creative and Critical Studies">Creative and Critical Studies</option>
-                    <option value="Science">Science</option>
-                    <option value="Health and Social Development">Health and Social Development</option>
-                    <option value="Management">Management</option>
-                    <option value="Medicine">Medicine</option>
-                    <option value="Graduate Studies">Graduate Studies</option>
+                    <option value="School of Engineering">School of Engineering</option>
+                    <option value="Okanagan School of Education">Okanagan School of Education </option>
+                    <option value="Faculty of Arts and Social Sciences">Faculty of Arts and Social Sciences </option>
+                    <option value="Faculty of Creative and Critical Studies">Faculty of Creative and Critical Studies</option>
+                    <option value="Faculty of Science">Faculty of Science </option>
+                    <option value="School of Health and Exercise Sciences">School of Health and Exercise Sciences</option>
+                    <option value="School of Nursing">School of Nursing </option>
+                    <option value="School of Social Work">School of Social Work</option>
+                    <option value="Faculty of Management">Faculty of Management</option>
+                    <option value="Faculty of Medicine">Faculty of Medicine</option>
+                    <option value="College of Graduate studies">College of Graduate studies</option>
                     <option value="Other">Other</option>
                   </select>
 
@@ -121,14 +130,8 @@
                 <label for="department" class="col-md-2 col-form-label text-md-right">Department</label>
 
                 <div class="col-md-8">
-                  <select id="department" class="custom-select" name="department" required>
+                  <select id="department" class="custom-select" name="department">
                     <option disabled selected hidden>Open this select menu</option>
-                    <optgroup label="Faculty of Education">
-                      <option value="Education">Education</option>
-                    </optgroup>
-                    <optgroup label="Faculty of Applied Science">
-                      <option value="Engineering">Engineering</option>
-                    </optgroup>
                     <optgroup label="Faculty of Arts and Social Sciences ">
                       <option value="Community, Culture and Global Studies">Community, Culture and Global Studies</option>
                       <option value="Economics, Philosophy and Political Science">Economics, Philosophy and Political Science</option>
@@ -145,20 +148,6 @@
                       <option value="Chemistry">Chemistry</option>
                       <option value="Computer Science, Mathematics, Physics and Statistics">Computer Science, Mathematics, Physics and Statistics</option>
                       <option value="Earth, Environmental and Geographic Sciences">Earth, Environmental and Geographic Sciences</option>
-                    </optgroup>
-                    <optgroup label="Faculty of Health and Social Development">
-                      <option value="Health and Exercise Sciences">Health and Exercise Sciences</option>
-                      <option value="Nursing">Nursing</option>
-                      <option value="Social Work">Social Work</option>
-                    </optgroup>
-                    <optgroup label="Faculty of Management">
-                      <option value="Management">Management</option>
-                    </optgroup>
-                    <optgroup label="Faculty of Medicine">
-                      <option value="Southern Medical Program">Southern Medical Program</option>
-                    </optgroup>
-                    <optgroup label="College of Graduate Studies">
-                      <option value="Graduate Studies">Graduate Studies</option>
                     </optgroup>
                     <option value="Other">Other</option>
 
@@ -178,7 +167,7 @@
 
                   <div class="form-check ">
                     <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="level" value="Undergraduate">
+                      <input type="radio" class="form-check-input" name="level" value="Undergraduate" required>
                       Undegraduate
                     </label>
                   </div>

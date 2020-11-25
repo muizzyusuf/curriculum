@@ -14,4 +14,8 @@ class AssessmentMethod extends Model
     public function learningOutcomes(){
         return $this->belongsToMany('App\Models\LearningOutcome')->using('App\Models\OutcomeAssessment');
     }
+
+    public function course(){
+        return $this->belongsTo('App\Models\Course');
+    }
 }

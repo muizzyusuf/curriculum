@@ -11,6 +11,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -64,6 +68,8 @@
             <div class="card">
 
                 <div class="card-body">
+                    <p class="form-text text-muted">On	this	page,	you	can	add,	edit	or	delete	student	assessment	methods	that	you	use	in	your	
+                        course.</p>
 
                     <div id="admins">
                         <div class="row">
@@ -81,7 +87,7 @@
                                         <tr class="table-active">
                                             <th colspan="3">Student Assesment Methods</th>
                                         </tr>
-                                        <div class="card-body">
+                                       
                                             @foreach($a_methods as $a_method)
 
                                             <tr>
@@ -168,7 +174,6 @@
 
                                             @endforeach
 
-                                        </div>
 
                                     @endif
                                 </table>

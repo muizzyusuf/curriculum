@@ -10,8 +10,12 @@
                 <h6>{{$program->department}}</h6>
                 <h6 class="text-muted">{{$program->level}}</h6>
 
-
+                
             </div>
+
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to setup this program project!
+              </div>
 
             <!-- progress bar -->
             <div>
@@ -34,14 +38,184 @@
                 </table>
             </div>
 
+            
+
             <div class="card">
+                
+
+                <div class="card-body">
+                    
+                    <p class="form-text text-muted">Program-level learning outcomes (PLOs) are the knowledge, skills and attributes that students
+                        are expected to attain by the end of a program of study. You can add, edit and delete program outcomes.
+                        You can also add program outcome categories to group outcomes that are similar. 
+                    </p>
+                    <p class="form-text text-muted">
+                        <i>Note:</i> PLO categories are not required as part of a program project. If PLO Categories are created after creating PLOs, 
+                        to categorise the PLO click edit and select from the list of PLO categories to classify the PLO. If categories have been created 
+                        and you have not yet categorized each PLO, you will see a list of PLOs under <b>Uncategorized Outcomes</b>.
+                    </p>
+
+                    <div id="ploCateogry">
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-sm table-borderless">
+
+                                    @if(count($ploCategories)<1)
+                                        <tr class="table-active">
+                                            <th colspan="2">There are no program learning outcome categories set for this program project.</th>
+                                        </tr>
+
+
+                                    @else
+
+                                        <tr class="table-active">
+                                            <th colspan="3">Program Learning Outcome Categories</th>
+                                        </tr>
+                                        <div class="card-body">
+                                            @foreach($ploCategories as $category)
+                                            <tr>
+                                                
+                                                <td>
+                                                    {{$category->plo_category}}
+                                                </td>
+                                                <td style="width:15%">
+                                                    <form action="{{route('ploCategory.destroy', $category->plo_category_id)}}"
+                                                        method="POST" class="float-right ml-2">
+                                                        @csrf
+                                                        {{method_field('DELETE')}}
+                                                        <input type="hidden" class="form-check-input" name="program_id"
+                                                            value={{$program->program_id}}>
+
+                                                        <button type="submit" style="width:60px"
+                                                            class="btn btn-danger btn-sm ">Delete</button>
+                                                    </form>
+
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm float-right"
+                                                        data-toggle="modal" style="width:60px; " data-target="#editCategoryModal{{$category->plo_category_id}}">
+                                                        Edit
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="editCategoryModal{{$category->plo_category_id}}" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="editCategoryModalLabel">Edit 
+                                                                        Program Learning Outcome Category</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+
+                                                                <form method="POST"
+                                                                    action="{{ action('PLOCategoryController@update', $category->plo_category_id) }}">
+                                                                    @csrf
+                                                                    {{method_field('PUT')}}
+
+                                                                    <div class="modal-body">
+
+                                                                        <div class="form-group row">
+                                                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
+                                
+                                                                            <div class="col-md-8">
+                                                                            <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" value="{{$category->plo_category}}" autofocus>
+                                
+                                                                                @error('category')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary col-2 btn-sm" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                               
+                                                    
+                                                </td>
+                                            </tr>
+
+                                            @endforeach
+
+                                        </div>
+
+                                        @endif
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal"
+                        data-target="#addCategoryModal">
+                        ＋ Add PLO Category
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog"
+                        aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addCategoryModalLabel">Add a Program Learning Outcome Category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <form method="POST" action="{{ action('PLOCategoryController@store') }}">
+                                    @csrf
+
+                                    <div class="modal-body">
+
+                                        <div class="form-group row">
+                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
+
+                                            <div class="col-md-8">
+                                                <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" autofocus>
+
+                                                @error('category')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" class="form-check-input" name="program_id"
+                                            value={{$program->program_id}}>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary col-2 btn-sm"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
 
                 <div class="card-body">
 
                     <div id="plos">
                         <div class="row">
                             <div class="col">
-                                <table class="table table-borderless">
+                                <table class="table table-sm table-borderless">
 
                                     @if(count($plos)<1) 
                                         <tr class="table-active">
@@ -63,7 +237,7 @@
                                                             <b>{{$plo->plo_shortphrase}}</b><br>
                                                             {{$plo->pl_outcome}}
                                                         </td>
-                                                        <td>
+                                                        <td style="width:15%">
                                                             <form action="{{route('plo.destroy', $plo->pl_outcome_id)}}" method="POST" class="float-right ml-2">
                                                                 @csrf
                                                                 {{method_field('DELETE')}}
@@ -146,13 +320,14 @@
 
                                             
                                         @else
+
                                             <tr>
                                                 <th colspan="3">Program Learning Outcomes</th>
                                             </tr>
                                             @foreach($ploCategories as $category)
                                             
                                             <tr class="table-active">
-                                                <th colspan="3">{{$category->plo_category}}</th>
+                                                <td colspan="3">{{$category->plo_category}}</td>
                                             </tr>
                                             
                                                 @foreach($plos as $plo)
@@ -164,7 +339,7 @@
                                                             <b>{{$plo->plo_shortphrase}}</b><br>
                                                             {{$plo->pl_outcome}}
                                                         </td>
-                                                        <td>
+                                                        <td style="width:15%">
                                                             <form action="{{route('plo.destroy', $plo->pl_outcome_id)}}" method="POST" class="float-right ml-2">
                                                                 @csrf
                                                                 {{method_field('DELETE')}}
@@ -235,12 +410,13 @@
                                                 
                                                                                             <select class="custom-select" name="category" id="category" required autofocus>
                                                                                                 @foreach($ploCategories as $c)
-                                                                                                    @if($c->category == $category->category)
-                                                                                                        <option selected value="{{$c->plo_category_id}}">{{$c->plo_category}}<option>
+                                                                                                    @if($c->plo_category == $category->plo_category)
+                                                                                                        <option selected value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
                                                                                                     @else
-                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}<option>
+                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
                                                                                                     @endif
                                                                                                 @endforeach
+                                                                                                <option value="">None</option>
                                                                                             </select>
 
                                                                                             @error('category')
@@ -363,8 +539,9 @@
                                                                                             <select class="custom-select" name="category" id="category" required autofocus>
                                                                                                 <option selected hidden disabled>Choose...</option>
                                                                                                     @foreach($ploCategories as $c)
-                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}<option>
+                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
                                                                                                     @endforeach
+                                                                                                    <option value="">None</option>
                                                                                             </select>
                                                                                             
                                                                                             @error('category')
@@ -466,8 +643,9 @@
                                                     <select class="custom-select" name="category" id="category" required autofocus>
                                                         <option selected hidden disabled>Choose...</option>
                                                         @foreach($ploCategories as $c)
-                                                            <option value="{{$c->plo_category_id}}">{{$c->plo_category}}<option>
+                                                            <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
                                                         @endforeach
+                                                        <option value="">None</option>
                                                     </select>
 
                                                     @error('category')
@@ -486,7 +664,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary col-2 btn-sm"
                                             data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
+                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
                                     </div>
                                 </form>
                             </div>
@@ -495,162 +673,7 @@
 
                 </div>
 
-                <div class="card-body">
-                     
-                    <div id="ploCateogry">
-                        <div class="row">
-                            <div class="col">
-                                <table class="table table-borderless">
-
-                                    @if(count($ploCategories)<1)
-                                        <tr class="table-active">
-                                            <th colspan="2">There are no program learning outcome categories set for this program project.</th>
-                                        </tr>
-
-
-                                    @else
-
-                                        <tr class="table-active">
-                                            <th colspan="3">Program Learning Outcome Categories</th>
-                                        </tr>
-                                        <div class="card-body">
-                                            @foreach($ploCategories as $category)
-                                            <tr>
-                                                
-                                                <td>
-                                                    {{$category->plo_category}}
-                                                </td>
-                                                <td>
-                                                    <form action="{{route('ploCategory.destroy', $category->plo_category_id)}}"
-                                                        method="POST" class="float-right ml-2">
-                                                        @csrf
-                                                        {{method_field('DELETE')}}
-                                                        <input type="hidden" class="form-check-input" name="program_id"
-                                                            value={{$program->program_id}}>
-
-                                                        <button type="submit" style="width:60px"
-                                                            class="btn btn-danger btn-sm ">Delete</button>
-                                                    </form>
-
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm float-right"
-                                                        data-toggle="modal" style="width:60px; " data-target="#editCategoryModal{{$category->plo_category_id}}">
-                                                        Edit
-                                                    </button>
-
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="editCategoryModal{{$category->plo_category_id}}" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editCategoryModalLabel">Edit 
-                                                                        Program Learning Outcome Category</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-
-                                                                <form method="POST"
-                                                                    action="{{ action('PLOCategoryController@update', $category->plo_category_id) }}">
-                                                                    @csrf
-                                                                    {{method_field('PUT')}}
-
-                                                                    <div class="modal-body">
-
-                                                                        <div class="form-group row">
-                                                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
-                                
-                                                                            <div class="col-md-8">
-                                                                            <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" value="{{$category->plo_category}}" autofocus>
-                                
-                                                                                @error('category')
-                                                                                <span class="invalid-feedback" role="alert">
-                                                                                    <strong>{{ $message }}</strong>
-                                                                                </span>
-                                                                                @enderror
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary col-2 btn-sm" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                               
-                                                    
-                                                </td>
-                                            </tr>
-
-                                            @endforeach
-
-                                        </div>
-
-                                        @endif
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal"
-                        data-target="#addCategoryModal">
-                        ＋ Add PLO Category
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog"
-                        aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addCategoryModalLabel">Add a Program Learning Outcome Category</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <form method="POST" action="{{ action('PLOCategoryController@store') }}">
-                                    @csrf
-
-                                    <div class="modal-body">
-
-                                        <div class="form-group row">
-                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
-
-                                            <div class="col-md-8">
-                                                <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" autofocus>
-
-                                                @error('category')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" class="form-check-input" name="program_id"
-                                            value={{$program->program_id}}>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary col-2 btn-sm"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
+                
                 <div class="card-footer">
                     <a href="{{route('programWizard.step1', $program->program_id)}}"><button
                             class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ General Information</button></a>

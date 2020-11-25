@@ -7,6 +7,9 @@ use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use App\Mail\NotifyInstructorMail;
+use Illuminate\Support\Facades\Mail;
+
 class CourseUserController extends Controller
 {
     /**
@@ -17,7 +20,7 @@ class CourseUserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     
     public function index()
@@ -40,7 +43,7 @@ class CourseUserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function store(Request $request, $course_id)
     {
         //
@@ -57,11 +60,12 @@ class CourseUserController extends Controller
 
         $courseUser = new CourseUser;
         $courseUser->course_id = $course_id;
-        $courseUser->program_id = $request->input('program_id');
         $courseUser->user_id = $user->id;
 
          
         if($courseUser->save()){
+            Mail::to($user->email)->send(new NotifyInstructorMail());
+        
             $request->session()->flash('success', 'Course '.$course->course_code.''.$course->course_num.' successfully assigned to '.$user->email);
         }else{
             $request->session()->flash('error', 'There was an error assigning the course');
@@ -69,7 +73,14 @@ class CourseUserController extends Controller
 
         $course->save();
 
-        return redirect()->route('programWizard.step4', $request->input('program_id'));
+
+        if($course->type == "assigned"){
+            return redirect()->route('programWizard.step4', $request->input('program_id'));
+        }else{
+            return redirect()->route('courseWizard.step0', $course->course_id);
+        }
+
+        
     }
 
     /**
@@ -104,6 +115,34 @@ class CourseUserController extends Controller
     public function update(Request $request, CourseUser $courseUser)
     {
         //
+        $this->validate($request, [
+            'email'=> 'required',
+            'email'=> 'exists:users,email',
+            ]);
+
+        $course = Course::where('course_id',$course_id)->first();
+        $user = User::where('email', $request->input('email'))->first();
+
+    
+
+        $courseUser = CourseUser::where('course_id',$course_id)->first();
+        $courseUser->user_id = $user->id;
+
+         
+        if($courseUser->save()){
+            Mail::to($user->email)->send(new NotifyInstructorMail());
+            $request->session()->flash('success', 'Course '.$course->course_code.''.$course->course_num.' successfully assigned to '.$user->email);
+        }else{
+            $request->session()->flash('error', 'There was an error assigning the course');
+        }
+
+        $course->save();
+
+        if($course->type == "assigned"){
+            return redirect()->route('programWizard.step4', $request->input('program_id'));
+        }else{
+            return redirect()->route('courseWizard.step0', $course->course_id);
+        }
     }
 
     /**
@@ -128,13 +167,18 @@ class CourseUserController extends Controller
             $request->session()->flash('error', 'There was an error unassigning the administrator');
         }
 
-        $courseUsers = CourseUser::where('course_id', $course_id)->where('program_id',$request->input('program_id'))->get();
+        $courseUsers = CourseUser::where('course_id', $course_id)->get();
         if (count($courseUsers) == 0){
             $course->assigned = -1;
         }
 
         $course->save();
 
-        return redirect()->route('programWizard.step4', $request->input('program_id'));
+        if($course->type == "assigned"){
+            return redirect()->route('programWizard.step4', $request->input('program_id'));
+        }else{
+            return redirect()->route('courseWizard.step0', $course->course_id);
+        }
+
     }
 }

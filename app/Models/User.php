@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory, Notifiable;
 
     /**
@@ -46,7 +47,11 @@ class User extends Authenticatable
     }
 
     public function courses(){
-        return $this->belongsToMany('App\Models\Course');
+        return $this->belongsToMany('App\Models\Course', 'course_users', 'user_id', 'course_id');
+    }
+
+    public function programs(){
+        return $this->belongsToMany('App\Models\Program', 'program_users', 'user_id', 'program_id',);
     }
 
     public function hasAnyRoles($roles){

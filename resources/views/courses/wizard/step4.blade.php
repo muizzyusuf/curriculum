@@ -10,6 +10,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -73,9 +77,10 @@
 
                                 @else
 
-                                    <div class="jumbotron">
+                                    
 
-                                        <div class="card mt-5">
+
+                                        <div class="card mt-1">
                                             @if(count($l_activities)<1 && count($a_methods)<1) 
                                                 <table class="table table-borderless">
                                                     <tr class="table-active">
@@ -88,8 +93,11 @@
                                                     
                                                     <div class="card-body">
                                                         <div class="container mb-3">
-                                                            Select those student assessment methods (if any) as well as teaching and learning activities (if any) that you use in assessing as well as teaching	the course learning outcome.
-                                                            If one of the two columns has not been set, you will have no options to select from. 
+                                                            <b>On	this	page,	answer	questions	for	each	course	outcome:</b><br>
+                                                            1. Select	the	assessment	methods	used	to	assess	the course	outcome	(if	any).<br>
+                                                            2. Select	the	teaching	and	learning	activities	used	for	the course	outcome	(if	any). <br>
+                                                            <span class="form-text text-muted">Note: Remember to click save once you are done. </span>
+
                                                         </div>
 
                                                         <form action="{{route('courses.outcomeDetails', $course->course_id)}}" method="POST">
@@ -143,7 +151,7 @@
                                                
                                             @endif
                                         </div>
-                                    </div>
+                                    
 
                                 @endif
                                     

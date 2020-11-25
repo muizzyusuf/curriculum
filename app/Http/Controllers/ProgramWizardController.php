@@ -17,7 +17,7 @@ class ProgramWizardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     /**
      * Display a listing of the resource.
@@ -53,7 +53,8 @@ class ProgramWizardController extends Controller
     public function step3($program_id)
     {
         //
-        $mappingScales = MappingScale::where('program_id', $program_id)->get();
+        $mappingScales = MappingScale::join('mapping_scale_programs', 'mapping_scales.map_scale_id', "=", 'mapping_scale_programs.map_scale_id')
+                                    ->where('mapping_scale_programs.program_id', $program_id)->get();
         $program = Program::where('program_id', $program_id)->first();
        
 
@@ -66,9 +67,11 @@ class ProgramWizardController extends Controller
         
         $program = Program::where('program_id', $program_id)->first();
         $courses = Course::where('program_id', $program_id)->get();
-        $courseUsers = CourseUser::join('users','course_users.user_id',"=","users.id")
-                                ->select('users.email')
-                                ->where('course_users.program_id','=',$program_id)->get();
+                
+        $courseUsers = Course::join('course_users','courses.course_id',"=","course_users.course_id")
+                                ->join('users','course_users.user_id',"=","users.id")
+                                ->select('users.email', 'course_users.course_id')
+                                ->where('courses.program_id','=',$program_id)->get();
        
 
         return view('programs.wizard.step4')->with('program', $program)->with('courses', $courses)->with('courseUsers',$courseUsers);

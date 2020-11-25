@@ -14,4 +14,8 @@ class LearningActivity extends Model
     public function learningOutcomes(){
         return $this->belongsToMany('App\Models\LearningOutcome')->using('App\Models\OutcomeActivity');
     }
+
+    public function course(){
+        return $this->belongsTo('App\Models\Course');
+    }
 }

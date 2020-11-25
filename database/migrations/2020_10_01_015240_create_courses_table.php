@@ -19,8 +19,9 @@ class CreateCoursesTable extends Migration
             $table->unsignedBigInteger('course_num');
             $table->string('course_title');
             $table->unsignedBigInteger('program_id');
-            $table->integer('status');
+            $table->integer('status')->default('-1');
             $table->integer('assigned');
+            $table->integer('required')->nullable();
             $table->string('type');
             $table->timestamps();
 

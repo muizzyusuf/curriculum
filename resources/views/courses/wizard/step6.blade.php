@@ -10,6 +10,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -58,11 +62,17 @@
             <div class="card ">
 
                 <a href="{{route('courses.pdf', $course->course_id)}}">
-                    <button class="btn btn-sm btn-primary mt-3 col-3 float-right mr-5"> Download PDF ⭳ </button>
+                    <button class="btn btn-sm btn-primary mt-3 mb-3 col-3 float-right mr-5"> Download PDF ⭳ </button>
                 </a>
 
+                <p class="ml-5 mr-5 form-text text-muted">You	can	review	and	download	the	answers	you	entered	during	the	process	of	mapping	
+                    the	course.	Based	on	this	review,	you	might	want	to	revisit	some	steps	and	edit	the	
+                    information	you	supplied.
+                    You	can	also	proceed to the next section and submit	your	summary	to	complete	the	mapping	of	your	course.</p>
 
-                <div class="card ml-5 mr-5 mt-5 mb-5">
+
+
+                <div class="card ml-5 mr-5 mt-3 mb-5">
 
                     
                     <div class="card-header font-weight-bold">
@@ -174,7 +184,7 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Course Learning Outcome Details for {{$course->course_code}}{{$course->course_num}}
+                        Mapping of {{$course->course_code}}{{$course->course_num}} CLOs to Teaching and Learning Activities & Assessment Methods 
                     </div>
     
     
@@ -277,7 +287,7 @@
                     
     
                     <div class="card-header font-weight-bold">
-                        Course Outcome Mapping for {{$course->course_code}}{{$course->course_num}}
+                        Mapping of CLOs to PLOs for {{$course->course_code}}{{$course->course_num}}
                     </div>
     
     

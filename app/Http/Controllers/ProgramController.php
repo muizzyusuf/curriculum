@@ -15,7 +15,7 @@ class ProgramController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     
     /**
@@ -61,7 +61,6 @@ class ProgramController extends Controller
             'program'=> 'required',
             'level'=> 'required',
             'faculty'=> 'required',
-            'department'=>'required',
             ]);
 
         $program = new Program;
@@ -137,7 +136,6 @@ class ProgramController extends Controller
             'program'=> 'required',
             'level'=> 'required',
             'faculty'=> 'required',
-            'department'=> 'required',
             ]);
 
         $program = Program::where('program_id', $program_id)->first();

@@ -17,8 +17,8 @@ class CreateProgramsTable extends Migration
             $table->bigIncrements('program_id');
             $table->string('program');
             $table->string('faculty');
-            $table->string('department');
-            $table->string('level')->nullable();
+            $table->string('department')->nullable();;
+            $table->string('level');
             $table->integer('status');
             $table->timestamps();
 

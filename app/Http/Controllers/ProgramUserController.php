@@ -8,6 +8,9 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Mail\NotifyProgramAdminMail;
+use Illuminate\Support\Facades\Mail;
+
 class ProgramUserController extends Controller
 {
     /**
@@ -17,7 +20,7 @@ class ProgramUserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
     
     public function index()
@@ -52,20 +55,16 @@ class ProgramUserController extends Controller
         $pu = new ProgramUser;
         $pu->program_id = $request->input('program_id');
 
-        $adminRole = Role::where('role','administrator')->first();
         $user = User::where('email', $request->input('email'))->first();
 
         $pu->user_id = $user->id;
 
         if($pu->save()){
+            Mail::to($user->email)->send(new NotifyProgramAdminMail());
+
             $request->session()->flash('success', 'Administrator added');
         }else{
             $request->session()->flash('error', 'There was an error adding the administrator');
-        }
-
-        
-        if($user->hasRole('administrator') == false){
-            $user->roles()->attach($adminRole);
         }
 
         return redirect()->route('programWizard.step1',$pu->program_id);

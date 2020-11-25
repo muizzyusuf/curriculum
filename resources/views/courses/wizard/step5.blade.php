@@ -10,6 +10,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to map this course!
+              </div>
+              
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -59,6 +63,11 @@
 
 
                 <div class="card-body">
+                    <p class="form-text text-muted">On	this	page,	you	can	use	the	mapping	scale	to	indicate	the	level	of	alignment	of	each	course	
+                        outcome	with	each	program-level	learning	outcome	(if	any). If	the	course	outcome	does	not	align, leave	the	level	of	alignment	at	NA	(No	
+                        Alignment)</p>
+                    <p class="form-text text-muted">Note:		Remember to click save once you are done.</p>
+
                     <div class="container row">
                         <div class="col">
                             @if(count($mappingScales)>0)

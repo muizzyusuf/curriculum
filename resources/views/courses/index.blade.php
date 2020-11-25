@@ -3,14 +3,17 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
-
+        <h1>Courses </h1>
+    <p class="form-text text-muted">Courses that you have created or been assigned to map are listed below. 
+        To create an individual course and map it to the Ministry of Advanced Education degree level standards click the create course button. 
+        If you would like to create a course and map it to actual program-level learning outcomes that you would like to input please go to <b>My Programs</b></p>
 
 
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-primary btn-sm col-2 mt-2 float-right" data-toggle="modal"
                     data-target="#createCourseModal">
-                    ＋ Add Course
+                    ＋ Create Course
                 </button>
             </div>
         </div>
@@ -120,21 +123,17 @@
     </div>
 </div>
 
+
 <div class="card mb-5 mt-5">
     <div class="card-header">
-        <b>Active Courses</b>
+        <b>Active Courses:</b> <span class="form-text text-muted"> Map the courses listed below.</span>
     </div>
     @if(count($activeCourses)>0)
-
+    
 
     <div class="card-body">
-
-        <div class="row mb-3">
-            <div class="col">
-                This list shows courses that you have created to map or been assigned to map as part of a program. From
-                this list, you can choose the course you want to map.
-            </div>
-        </div>
+        <p class="form-text text-muted">This list shows courses that you have created to map or been assigned to map as part of a program. From
+            this list, you can choose the course you want to map.</p>
 
         <table class="table">
             <tbody>
@@ -176,13 +175,8 @@
 
 
     <div class="card-body">
-
-        <div class="row mb-3">
-            <div class="col">
-                This list shows courses that you have mapped in previous years. From this list, you can choose the
-                course you want to review.
-            </div>
-        </div>
+        <p class="form-text text-muted"> This list shows courses that you have mapped previouslt. From this list, you can choose the
+            course you want to review.</p>
 
         <table class="table">
             <tbody>

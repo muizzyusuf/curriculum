@@ -14,6 +14,10 @@
 
             </div>
 
+            <div class="alert alert-warning" role="alert">
+                ⚠️ Please complete the steps below to setup this program project!
+              </div>
+
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
@@ -38,8 +42,69 @@
             <div class="card">
 
                 <div class="card-body">
+                    <p class="form-text text-muted">
+                        The mapping scale is the scale that will be used to indicate the degree to which a program-level
+                        learning outcome is addressed by a course outcome, or the degree of alignment between the
+                        course outcome and program-level learning outcome.
+                    </p>
+                    <p class="form-text text-muted">
+                        <i>Note:</i> You cannot edit the default mapping scale levels only the ones you have created. 
+                    </p>
 
                     <div class="row mb-3">
+                        <div class="col-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 250px" data-toggle="modal" data-target=".bd-example-modal-lg">Show Default Mapping Scale</button>
+
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Default Mapping Scale</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Maping Scale</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td scope="row">Introduced (I)</td>
+                                                        <td>Key ideas, concepts or skills related to the learning outcome are demonstrated at an introductory level. 
+                                                            Learning activities focus on basic knowledge, skills, and/or competencies and entry-level complexity.</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Developing (D)</td>
+                                                        <td>Learning outcome is reinforced with feedback; students demonstrate the outcome at an increasing level of proficiency. 
+                                                            Learning activities concentrate on enhancing and strengthening existing knowledge and skills as well as expanding complexity.</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row">Advanced (A)</td>
+                                                        <td>Students demonstrate the learning outcomes with a high level of independence, expertise and sophistication expected upon graduation. 
+                                                            Learning activities focus on and integrate the use of content or skills in multiple.</td>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                          </div>
+                                          
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+
+                            
+                        </div>
+
+
                         <div class="col">
 
 
@@ -47,7 +112,7 @@
                                 @csrf
                                 <input type="hidden" class="form-check-input" name="program_id" value="{{$program->program_id}}">
                                
-                                <button type="submit" style="width:250px" class="btn btn-secondary btn-sm "> + Use the Deafult Mapping Scale</button>
+                                <button type="submit" style="width:250px" class="btn btn-secondary btn-sm "> + Use the Default Mapping Scale Levels</button>
                             </form>
                         </div>
                         
@@ -60,7 +125,7 @@
 
                                     @if(count($mappingScales)<1) 
                                         <tr class="table-active">
-                                            <th colspan="2">There is no mapping scale set for this program project.</th>
+                                            <th colspan="2">There are no mapping scale levels set for this program project.</th>
                                         </tr>
 
                                     @else
@@ -82,9 +147,11 @@
                                                     {{$ms->description}}
                                                 </td>
                                                 <td style="width:5%" >
-                                                    <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px;" data-target="#editMSModal{{$ms->map_scale_id}}">
-                                                        Edit
-                                                    </button>
+                                                    @if($ms->map_scale_id !== 1 && $ms->map_scale_id !== 2 && $ms->map_scale_id !== 3 )
+                                                        <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px;" data-target="#editMSModal{{$ms->map_scale_id}}">
+                                                            Edit
+                                                        </button>
+                                                    @endif
 
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="editMSModal{{$ms->map_scale_id}}" tabindex="-1" role="dialog" aria-labelledby="editMSModalLabel" aria-hidden="true">
@@ -135,8 +202,41 @@
                                                                             <label for="colour" class="col-md-4 col-form-label text-md-right">Colour</label>
                                 
                                                                             <div class="col-md-8">
-                                                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" value="{{$ms->colour}}" required autofocus>
-                                
+                                                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" value="{{$ms->colour}}" required autofocus list="colours">
+                                                                                <datalist id="colours">
+                                                                                    <option value="#494444">
+                                                                                    <option value="#726f6f">
+                                                                                    <option value="#8b8989">
+                                                                                    <option value="#bbbbbb">
+                                                                                    <option value="#aaaaaa">
+
+                                                                                    <option value="#011f4b">
+                                                                                    <option value="#03396c">
+                                                                                    <option value="#005b96">
+                                                                                    <option value="#6497b1">
+                                                                                    <option value="#b3cde0">
+
+                                                                                    <option value="#991101">
+                                                                                    <option value="#c23210">
+                                                                                    <option value="#d65f59">
+                                                                                    <option value="#ff8ab3">
+                                                                                    <option value="#ffd0c2">
+
+                                                                                    <option value="#009c1a">
+                                                                                    <option value="#22b600">
+                                                                                    <option value="#26cc00">
+                                                                                    <option value="#7be382">
+                                                                                    <option value="#d2f2d4">
+
+                                                                                    <option value="#7f6b00">
+                                                                                    <option value="#ccac00">
+                                                                                    <option value="#ffd700">
+                                                                                    <option value="#ffeb7f">
+                                                                                    <option value="#fff7cc">
+                                                                                </datalist>
+                                                                              
+                                                                    
+
                                                                                 @error('colour')
                                                                                 <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $message }}</strong>
@@ -200,9 +300,9 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal"
+                    <button type="button" class="btn btn-primary btn-sm col-3 mt-3 float-right" data-toggle="modal"
                         data-target="#addMSModal">
-                        ＋ Add Mapping Scale Level
+                        ＋ Add My Own Mapping Scale Level
                     </button>
 
                     <!-- Modal -->
@@ -254,7 +354,38 @@
                                             <label for="colour" class="col-md-4 col-form-label text-md-right">Colour</label>
 
                                             <div class="col-md-8">
-                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" required autofocus>
+                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" required autofocus list="colours">
+                                                <datalist id="colours">
+                                                    <option value="#494444">
+                                                    <option value="#726f6f">
+                                                    <option value="#8b8989">
+                                                    <option value="#bbbbbb">
+                                                    <option value="#aaaaaa">
+
+                                                    <option value="#011f4b">
+                                                    <option value="#03396c">
+                                                    <option value="#005b96">
+                                                    <option value="#6497b1">
+                                                    <option value="#b3cde0">
+
+                                                    <option value="#991101">
+                                                    <option value="#c23210">
+                                                    <option value="#d65f59">
+                                                    <option value="#ff8ab3">
+                                                    <option value="#ffd0c2">
+
+                                                    <option value="#009c1a">
+                                                    <option value="#22b600">
+                                                    <option value="#26cc00">
+                                                    <option value="#7be382">
+                                                    <option value="#d2f2d4">
+
+                                                    <option value="#7f6b00">
+                                                    <option value="#ccac00">
+                                                    <option value="#ffd700">
+                                                    <option value="#ffeb7f">
+                                                    <option value="#fff7cc">
+                                                </datalist>
 
                                                 @error('colour')
                                                 <span class="invalid-feedback" role="alert">
