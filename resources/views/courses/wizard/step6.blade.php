@@ -4,56 +4,40 @@
 <div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="mt-2 mb-3">
-                <h3>Course: {{$course->course_code}}{{$course->course_num}}</h3>
-                <h5>{{$course->course_title}}</h5>
-
-            </div>
-
-            <div class="alert alert-warning" role="alert">
-                ⚠️ Please complete the steps below to map this course!
-              </div>
+            @include('courses.wizard.header')
 
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step0', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>0</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step1', $course->course_id)}}"
+                            <td><a class="btn @if($lo_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step1', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>1</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step2', $course->course_id)}}"
+                            <td><a class="btn @if($am_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step2', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>2</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step3', $course->course_id)}}"
+                            <td><a class="btn @if($la_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step3', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>3</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step4', $course->course_id)}}"
+                            <td><a class="btn @if($oAct < 1 && $oAss < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step4', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>4</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step5', $course->course_id)}}"
+                            <td><a class="btn @if($outcomeMapsCount < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step5', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>5</b> </a></td>
-                            <td><a class="btn btn-success" href="{{route('courseWizard.step6', $course->course_id)}}"
+                            <td><a class="btn btn-primary" href="{{route('courseWizard.step6', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>6</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step7', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>7</b></a></td>
                         </tr>
 
                         <tr>
-                            <td>General Information</td>
                             <td>Course Learning Outcomes</td>
                             <td>Student Assesment Methods</td>
                             <td>Teaching and Learning Activities</td>
                             <td>Course Outcome Mapping</td>
                             <td>Program Outcome Mapping</td>
                             <td>Course Summary</td>
-                            <td>Finish</td>
                         </tr>
                     </tbody>
                 </table>
@@ -68,7 +52,7 @@
                 <p class="ml-5 mr-5 form-text text-muted">You	can	review	and	download	the	answers	you	entered	during	the	process	of	mapping	
                     the	course.	Based	on	this	review,	you	might	want	to	revisit	some	steps	and	edit	the	
                     information	you	supplied.
-                    You	can	also	proceed to the next section and submit	your	summary	to	complete	the	mapping	of	your	course.</p>
+                    You	can	also click finish and submit	your	summary	to	complete	the	mapping	of	your	course.</p>
 
 
 
@@ -76,7 +60,7 @@
 
                     
                     <div class="card-header font-weight-bold">
-                        Course Learning Outcomes for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Course Learning Outcomes/Competencies
                     </div>
                     
     
@@ -113,7 +97,7 @@
                     </div>
                 
                     <div class="card-header font-weight-bold">
-                        Student Assessment Methods for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Student Assessment Methods
                     </div>
                     
     
@@ -148,12 +132,12 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Teaching and Learning Activities for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Teaching and Learning Activities
                     </div>
     
     
                     <div class="card-body ml-5 mr-5">
-                        Teaching and Learning Activities description goes here.
+                        Teaching and Learning Activities used in this course are listed below
     
                         <table class="table table-bordered table-sm mt-3">
     
@@ -184,12 +168,12 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Mapping of {{$course->course_code}}{{$course->course_num}} CLOs to Teaching and Learning Activities & Assessment Methods 
+                        {{$course->course_code}}{{$course->course_num}}: Curriculum Alignment Table
                     </div>
     
     
                     <div class="card-body ml-5 mr-5">
-                        By the end of the course, students are expected to learn the following outcomes.
+                        
                         <table class="table table-bordered table-sm mt-3">
     
                             @if(count($l_outcomes)<1) 
@@ -238,7 +222,11 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Program Learning Outcomes for: {{$program->program}}
+                        @if($course->program_id == 1 ?? $course->program_id == 2 ?? $course->program_id == 3 )
+                            BC {{$program->program}} (in lieu of PLOs)
+                        @else 
+                            {{$program->program}}: Program Learning Outcomes or Competencies
+                        @endif
                     </div>
     
                     <div class="card-body ml-5 mr-5 mt-3">
@@ -287,7 +275,7 @@
                     
     
                     <div class="card-header font-weight-bold">
-                        Mapping of CLOs to PLOs for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Outcome Maps
                     </div>
     
     
@@ -334,7 +322,7 @@
 
                         @endif
     
-                        This chart shows the alignment of course outcomes to program-level learning outcomes. Program-level learning outcomes and the mapping scale are listed below the chart.
+                        This chart shows the alignment of course outcomes to program-level learning outcomes (or Ministry Standards).
     
                         <table  class="table table-bordered table-sm mt-3">
     
@@ -397,17 +385,20 @@
                         </table>   
     
                     </div>
-    
+                    
                 </div>
-            
+                <p class="form-text text-center text-muted">
+                    If you have finished mapping this course. Click the finish button to save your work.
+                </p> 
 
                 <div class="card-footer">
                     <a href="{{route('courseWizard.step5', $course->course_id)}}">
-                        <button class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ Course Outcomes Mapping</button>
+                        <button class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ Program Outcome Mapping</button>
                     </a>
-                    <a href="{{route('courseWizard.step7', $course->course_id)}}">
-                        <button class="btn btn-sm btn-primary mt-3 col-3 float-right"> Finish  ➡</button>
+                    <a href="{{route('courses.submit', $course->course_id)}}">
+                        <button class="btn btn-sm btn-success mt-3 col-3 float-right"> Finish</button>
                     </a>
+                    
                     
                 </div>
 
@@ -425,7 +416,17 @@
 
 </div>
 
-
+<script type="text/javascript">
+    $(document).ready(function () {
+  
+      $("form").submit(function () {
+        // prevent duplicate form submissions
+        $(this).find(":submit").attr('disabled', 'disabled');
+        $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+  
+      });
+    });
+  </script>
 
 
 @endsection

@@ -45,7 +45,6 @@ class CourseController extends Controller
                 ->join('programs', 'courses.program_id', '=', 'programs.program_id')
                 ->select('courses.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
                 ->where('course_users.user_id','=',Auth::id())->where('courses.status','=', -1)
-                ->where('programs.status','=',1)
                 ->get();
 
         $archivedCourses = User::join('course_users', 'users.id', '=', 'course_users.user_id')
@@ -53,7 +52,6 @@ class CourseController extends Controller
                 ->join('programs', 'courses.program_id', '=', 'programs.program_id')
                 ->select('courses.program_id','courses.course_code', 'courses.course_id','courses.course_num','courses.course_title', 'courses.status','programs.program', 'programs.faculty', 'programs.department','programs.level')
                 ->where('course_users.user_id','=',Auth::id())->where('courses.status','=', 1)
-                ->where('programs.status','=',1)
                 ->get();
 
         return view('courses.index')->with('user', $user)->with('activeCourses', $activeCourses)->with('archivedCourses', $archivedCourses);
@@ -103,7 +101,7 @@ class CourseController extends Controller
                 $request->session()->flash('error', 'There was an error adding the course');
             }
 
-            return redirect()->route('programWizard.step4', $request->input('program_id'));
+            return redirect()->route('programWizard.step3', $request->input('program_id'));
 
         }else{
 
@@ -187,7 +185,7 @@ class CourseController extends Controller
         $course->status =-1;
         $course->save();
 
-        return redirect()->route('courseWizard.step0', $course_id);
+        return redirect()->route('courseWizard.step1', $course_id);
     }
 
     /**
@@ -218,11 +216,7 @@ class CourseController extends Controller
             $request->session()->flash('error', 'There was an error updating the course');
         }
 
-        if($request->has('program_id')){
-            return redirect()->route('programWizard.step4', $request->input('program_id'));
-        }else{
-            return redirect()->route('courseWizard.step0', $course_id);
-        }
+        return redirect()->back();   
         
        
     }
@@ -248,7 +242,7 @@ class CourseController extends Controller
 
         if($type == 'assigned'){
 
-            return redirect()->route('programWizard.step4', $request->input('program_id'));
+            return redirect()->route('programWizard.step3', $request->input('program_id'));
 
         }else{
 
@@ -257,25 +251,25 @@ class CourseController extends Controller
 
     }
 
-    public function status(Request $request, $course_id)
-    {
-        //
-        $c = Course::where('course_id', $course_id)->first();
+    // public function status(Request $request, $course_id)
+    // {
+    //     //
+    //     $c = Course::where('course_id', $course_id)->first();
 
-        if($c->status == -1){
-            $c->status = 1;
-        }else if($c->status == 1){
-            $c->status = -1;
-        }
+    //     if($c->status == -1){
+    //         $c->status = 1;
+    //     }else if($c->status == 1){
+    //         $c->status = -1;
+    //     }
         
-        if($c->save()){
-            $request->session()->flash('success','Course status has been updated');
-        }else{
-            $request->session()->flash('error', 'There was an error updating the course status');
-        }
+    //     if($c->save()){
+    //         $request->session()->flash('success','Course status has been updated');
+    //     }else{
+    //         $request->session()->flash('error', 'There was an error updating the course status');
+    //     }
 
-        return redirect()->route('programWizard.step4', $c->program_id);
-    }
+    //     return redirect()->route('programWizard.step3', $c->program_id);
+    // }
 
     public function submit(Request $request, $course_id)
     {

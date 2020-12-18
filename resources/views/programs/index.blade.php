@@ -3,13 +3,12 @@
 @section('content')
 
 <div class="row justify-content-center">
-  <div class=" col-md-10">
-    <h1>Current Programs</h1>
-    <p class="form-text text-muted">Program projects you manage are listed below. The list of program projects includes projects that you have created or are assigned to as an
-      administrator. From this list, you can choose the progam project you want to view its details.</p>
-    <p class="form-text text-muted"><i>Note:</i> If you would like to create a course and map it to actual program-level learning outcomes that you would like to input; create a program, 
-      input the PLOs, create the course and assign it to yourself to be mapped. Then proceed to My Courses and map the course.</p>
-  
+  <div class=" col-md-12">
+    <h1>Programs</h1>
+    <p class="form-text text-muted">See below the programs you have mapped using this tool. </p>
+    <p class="form-text text-primary font-weight-bold"><i>Note:</i> If you are ideating/evaluating a course that is not
+      associated with a specific program, use the "My Courses" tab instead.</p>
+
 
 
     <div class="card">
@@ -20,7 +19,7 @@
             <th scope="col">Program</th>
             <th scope="col">Faculty and Department/School</th>
             <th scope="col">Level</th>
-            <th scope="col">Status</th>
+            <!-- <th scope="col">Status</th> -->
           </tr>
         </thead>
         <tbody>
@@ -29,13 +28,13 @@
             <td><a href="{{route('programWizard.step1', $program->program_id)}}">{{$program->program}}</a></td>
             <td> {{$program->faculty}} <br>{{$program->department}}</td>
             <td> {{$program->level}} </td>
-            <td>
+            {{-- <!-- <td>
               @if($program->status == -1)
               ❗Not configured
               @else
               ✔️Active
               @endif
-            </td>
+            </td> --> --}}
           </tr>
 
           @endforeach
@@ -107,9 +106,11 @@
                     <option value="School of Engineering">School of Engineering</option>
                     <option value="Okanagan School of Education">Okanagan School of Education </option>
                     <option value="Faculty of Arts and Social Sciences">Faculty of Arts and Social Sciences </option>
-                    <option value="Faculty of Creative and Critical Studies">Faculty of Creative and Critical Studies</option>
+                    <option value="Faculty of Creative and Critical Studies">Faculty of Creative and Critical Studies
+                    </option>
                     <option value="Faculty of Science">Faculty of Science </option>
-                    <option value="School of Health and Exercise Sciences">School of Health and Exercise Sciences</option>
+                    <option value="School of Health and Exercise Sciences">School of Health and Exercise Sciences
+                    </option>
                     <option value="School of Nursing">School of Nursing </option>
                     <option value="School of Social Work">School of Social Work</option>
                     <option value="Faculty of Management">Faculty of Management</option>
@@ -133,8 +134,10 @@
                   <select id="department" class="custom-select" name="department">
                     <option disabled selected hidden>Open this select menu</option>
                     <optgroup label="Faculty of Arts and Social Sciences ">
-                      <option value="Community, Culture and Global Studies">Community, Culture and Global Studies</option>
-                      <option value="Economics, Philosophy and Political Science">Economics, Philosophy and Political Science</option>
+                      <option value="Community, Culture and Global Studies">Community, Culture and Global Studies
+                      </option>
+                      <option value="Economics, Philosophy and Political Science">Economics, Philosophy and Political
+                        Science</option>
                       <option value="History and Sociology">History and Sociology</option>
                       <option value="Psychology">Psychology</option>
                     </optgroup>
@@ -146,8 +149,10 @@
                     <optgroup label="Faculty of Science">
                       <option value="Biology">Biology</option>
                       <option value="Chemistry">Chemistry</option>
-                      <option value="Computer Science, Mathematics, Physics and Statistics">Computer Science, Mathematics, Physics and Statistics</option>
-                      <option value="Earth, Environmental and Geographic Sciences">Earth, Environmental and Geographic Sciences</option>
+                      <option value="Computer Science, Mathematics, Physics and Statistics">Computer Science,
+                        Mathematics, Physics and Statistics</option>
+                      <option value="Earth, Environmental and Geographic Sciences">Earth, Environmental and Geographic
+                        Sciences</option>
                     </optgroup>
                     <option value="Other">Other</option>
 
@@ -200,5 +205,17 @@
 
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $("form").submit(function () {
+      // prevent duplicate form submissions
+      $(this).find(":submit").attr('disabled', 'disabled');
+      $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+    });
+  });
+</script>
 
 @endsection

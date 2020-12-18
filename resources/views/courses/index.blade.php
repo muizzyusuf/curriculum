@@ -4,9 +4,10 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <h1>Courses </h1>
-    <p class="form-text text-muted">Courses that you have created or been assigned to map are listed below. 
-        To create an individual course and map it to the Ministry of Advanced Education degree level standards click the create course button. 
-        If you would like to create a course and map it to actual program-level learning outcomes that you would like to input please go to <b>My Programs</b></p>
+    <p class="form-text text-muted">See below the courses you have mapped using this tool (under Completed Courses) and those you are still working on (Active Courses).
+        </p>
+    <p class="form-text text-primary font-weight-bold"><i>Note:</i>  If you are ideating/evaluating a program, go to "My Programs". 
+        This section should only be used for courses that you are not associating with a specific program.</p>
 
 
         <div class="row">
@@ -19,8 +20,7 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="createCourseModal" tabindex="-1" role="dialog"
-            aria-labelledby="createCourseModalLabel" aria-hidden="true">
+        <div class="modal fade" id="createCourseModal" tabindex="-1" role="dialog" aria-labelledby="createCourseModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -29,7 +29,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="{{ action('CourseController@store') }}">
+                    <form id="createCourse" method="POST" action="{{ action('CourseController@store') }}">
                         @csrf
                         <div class="modal-body">
 
@@ -40,6 +40,7 @@
 
                                 <div class="col-md-8">
                                     <input id="course_code" type="text"
+                                        pattern="[A-Za-z]{4}"
                                         class="form-control @error('course_code') is-invalid @enderror"
                                         name="course_code" required autofocus>
 
@@ -48,6 +49,9 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    <small id="helpBlock" class="form-text text-muted">
+                                        Four letter course code e.g. SUST, COSC etc.
+                                    </small>
                                 </div>
                             </div>
 
@@ -86,9 +90,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="program_id" class="col-md-3 col-form-label text-md-right">Ministry of
-                                    Advanced Education
-                                    Standards</label>
+                                <label for="program_id" class="col-md-3 col-form-label text-md-right"> Map this course against</label>
                                 <div class="col-md-8">
                                     <select class="form-control" name="program_id" id="program_id" required>
                                         <option value="" disabled selected hidden>Please Choose...</option>
@@ -97,8 +99,7 @@
                                         <option value="3">Doctoral degeree level standards</option>
                                     </select>
                                     <small id="helpBlock" class="form-text text-muted">
-                                        Choose what Ministry of Advanced Education degree level standards to map your
-                                        course to
+                                        These are the standards from the Ministry of Advanced Education in BC.
                                     </small>
                                 </div>
                             </div>
@@ -112,7 +113,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary col-2 btn-sm"
                                 data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
+                            <button id="submit" type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
                         </div>
                     </form>
                 </div>
@@ -126,29 +127,63 @@
 
 <div class="card mb-5 mt-5">
     <div class="card-header">
-        <b>Active Courses:</b> <span class="form-text text-muted"> Map the courses listed below.</span>
+        <b>Active Courses:</b> <span class="form-text text-muted"> Courses you are working on.</span>
     </div>
     @if(count($activeCourses)>0)
     
 
     <div class="card-body">
-        <p class="form-text text-muted">This list shows courses that you have created to map or been assigned to map as part of a program. From
-            this list, you can choose the course you want to map.</p>
+        <p class="form-text text-muted">To edit a course from this list, click on its title.</p>
 
-        <table class="table">
-            <tbody>
-                @foreach($activeCourses as $course)
-                <tr class="border">
-                    <td><a href="{{route('courseWizard.step0', $course->course_id)}}">{{$course->course_code}}{{$course->course_num}}
-                            - {{$course->course_title}} </a></td>
-                    <td>{{$course->program}} <br>{{$course->faculty}} <br>{{$course->department}} <br> {{$course->level}} </td>
-                    <td>❗In Progress</td>
+        <div class="card">
+            <div class="card-header">
+                Courses Not Associated With a Program
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @foreach($activeCourses as $course)
+                            @if($course->program_id == 1 ?? $course->program_id == 2 ?? $course->program_id == 3 )
+                                <tr class="border">
+                                    <td><a href="{{route('courseWizard.step1', $course->course_id)}}">{{$course->course_code}}{{$course->course_num}}
+                                        - {{$course->course_title}} </a></td>
 
-                </tr>
-                @endforeach
+                                    <td>❗In Progress</td>
+        
+                                </tr>
+                            @endif
+                        @endforeach
+        
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
 
-            </tbody>
-        </table>
+        <div class="card mt-3">
+            <div class="card-header">
+                Courses Associated With a Program
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @foreach($activeCourses as $course)
+                            @if($course->program_id !== 1 ?? $course->program_id !== 2 ?? $course->program_id !== 3 )
+                                <tr class="border">
+                                    <td><a href="{{route('courseWizard.step1', $course->course_id)}}">{{$course->course_code}}{{$course->course_num}}
+                                        - {{$course->course_title}} </a></td>
+                                    <td>{{$course->program}} <br>{{$course->faculty}} <br>{{$course->department}} <br> {{$course->level}} </td>
+                                    <td>❗In Progress</td>
+            
+                                </tr>
+                            @endif
+                        @endforeach
+        
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
     </div>
     @else
 
@@ -169,13 +204,13 @@
 
 <div class="card mb-5">
     <div class="card-header">
-        <b>Completed Courses</b>
+        <b>Completed Courses</b> <span class="form-text text-muted"> Courses already mapped.</span>
     </div>
     @if(count($archivedCourses)>0)
 
 
     <div class="card-body">
-        <p class="form-text text-muted"> This list shows courses that you have mapped previouslt. From this list, you can choose the
+        <p class="form-text text-muted"> This list shows courses that you have mapped previously. From this list, you can choose the
             course you want to review.</p>
 
         <table class="table">
@@ -183,7 +218,12 @@
                 @foreach($archivedCourses as $course)
                 <tr class="border">
                     <td>{{$course->course_code}}{{$course->course_num}} - {{$course->course_title}}</td>
-                    <td>{{$course->program}} <br>{{$course->faculty}} <br> {{$course->level}} </td>
+
+                    @if($course->program_id !== 1 ?? $course->program_id !== 2 ?? $course->program_id !== 3 )
+                        <td>{{$course->program}} <br>{{$course->faculty}} <br> {{$course->level}} </td>
+                    @else
+                        <td></td>
+                    @endif
                     
                     <td>
                         <a class="btn btn-secondary btn-sm" style="width:60px"
@@ -221,4 +261,16 @@
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    
+        $("form").submit(function () {
+    // prevent duplicate form submissions
+        $(this).find(":submit").attr('disabled', 'disabled');
+        $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+    });
+});
+</script>
 @endsection

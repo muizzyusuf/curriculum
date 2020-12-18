@@ -11,6 +11,8 @@ class LearningOutcome extends Model
 
     protected $primaryKey = 'l_outcome_id';
 
+    protected $fillable = ["l_outcome", "clo_shortphrase"];
+
     public function course(){
         return $this->belongsTo('App\Models\Course');
     }

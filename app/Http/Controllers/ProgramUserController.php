@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Mail\NotifyProgramAdminMail;
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\DB;
+
 class ProgramUserController extends Controller
 {
     /**
@@ -51,15 +53,19 @@ class ProgramUserController extends Controller
             'email'=> 'required',
             'email'=> 'exists:users,email',
             ]);
-
-        $pu = new ProgramUser;
-        $pu->program_id = $request->input('program_id');
-
+        
         $user = User::where('email', $request->input('email'))->first();
 
-        $pu->user_id = $user->id;
+        // $pu = new ProgramUser;
+        // $pu->program_id = $request->input('program_id');
+        // $pu->user_id = $user->id;
+       
 
-        if($pu->save()){
+        $pu = DB::table('program_users')->updateOrInsert(
+            ['program_id' => $request->input('program_id'), 'user_id' => $user->id ]
+        );
+
+        if($user->save()){
             Mail::to($user->email)->send(new NotifyProgramAdminMail());
 
             $request->session()->flash('success', 'Administrator added');
@@ -67,7 +73,7 @@ class ProgramUserController extends Controller
             $request->session()->flash('error', 'There was an error adding the administrator');
         }
 
-        return redirect()->route('programWizard.step1',$pu->program_id);
+        return redirect()->back();
     }
 
     /**
@@ -121,7 +127,7 @@ class ProgramUserController extends Controller
             $request->session()->flash('error', 'There was an error deleting the user');
         }
 
-        return redirect()->route('programWizard.step1', $program_id);
+        return redirect()->back();
     
     }
 }

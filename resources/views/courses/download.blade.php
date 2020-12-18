@@ -8590,362 +8590,354 @@
 </head>
 
 <body>
-    
+
+    <div>
+        <div>
+            <img src="{{ asset('img/UBC-logo-2018-fullsig-blue-rgb72.png') }}" alt="UBC logo">
+        </div>
+        <div class="mt-2 mb-3">
+            <p class="float-right">{{date("Y-m-d")}}</p>
+            <h1>Course Summary</h1>
+            <p><b>Course: {{$course->course_code}}{{$course->course_num}} - {{$course->course_title}}</b></p>
+            <p><b>Program Project: {{$program->program}}</b></p>
+            <p class="text-muted">Faculty/School: {{$program->faculty}}</p>
+            <p class="text-muted">Department: {{$program->department}}</p>
+            <p class="text-muted">Level: {{$program->level}}</p>
+
+        </div>
         
+
+        <table style="margin-top:15px; table-layout: fixed; border-collapse: collapse; width: 100%;" class="table">
+            <tr>
+                <th style="background-color: #999999;">{{$course->course_code}}{{$course->course_num}}: Course Learning Outcomes/Competencies</th>
+            </tr>
+            <tr >
+                <td style="padding-left: 24px; padding-right: 24px">
+                    <p>The course learning outcomes or competencies used in this course are listed below.</p>
+                    <table class="table table-bordered table-sm  mt-3">
+
+                        @if(count($l_outcomes)<1) 
+                            <tr>
+                                <th style="background-color: #e3e3e3;" class="table-light">There are no course learning outcomes set for this course.</th>
+                            </tr>
+
+                        @else
+
+                            <tr>
+                                <th style="background-color: #e3e3e3;" class="table-light"></th>
+                                <th style="background-color: #e3e3e3;" class="table-light">Course Learning Outcomes or Competencies</th>
+                            </tr>
+                            @for($i = 0; $i < count($l_outcomes); $i++) 
+                                <tr>
+                                    <td style="width:5%">{{$i+1}}</td>
+                                    <td>
+                                        <b>{{$l_outcomes[$i]->clo_shortphrase}}</b><br>
+                                        {{$l_outcomes[$i]->l_outcome}}
+
+                                    </td>
+                                </tr>
+                            @endfor
+
+                        @endif
+
+                    </table>
+                </td>
+            </tr>
+        </table>    
             
+        <div>
+            <table style="margin-top:15px; page-break-before: always;" class="table">
+                <tr>
+                    <th style="background-color: #999999;">{{$course->course_code}}{{$course->course_num}}: Student Assessment Methods</th>
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+                        <p>Student assessment methods used in this course are listed below.</p>
+                        <table class="table table-bordered table-sm  mt-3">
 
-                
-                        <div>
-                            <div class="mt-2 mb-3">
-                                <h2>Course Summary</h2>
-                                <h5>Course: {{$course->course_code}}{{$course->course_num}} - {{$course->course_title}}
-                                </h5>
-                                <h5>Program Project: {{$program->program}}</h5>
-                                <h6 class="text-muted">Faculty: {{$program->faculty}}</h6>
-                                <h6 class="text-muted">School/Department: {{$program->department}}</h6>
-                                <h6 class="text-muted">Level: {{$program->level}}</h6>
-
-                            </div>
-                            
-
-                            <table style="margin-top:15px" class="table">
+                            @if(count($a_methods)<1) 
                                 <tr>
-                                    <th style="background-color: #999999;">Course Learning Outcomes for {{$course->course_code}}{{$course->course_num}}</th>
+                                    <th style="background-color: #e3e3e3;" class="table-light">There are no student assessment methods set for this course.</th>
                                 </tr>
-                                <tr >
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>The course learning outcomes used in this course are listed below.</p>
-                                        <table class="table table-bordered table-sm  mt-3">
 
-                                            @if(count($l_outcomes)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no course learning outcomes set for this course.</th>
-                                                </tr>
+                            @else
 
-                                            @else
-
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Course Learning Outcomes</th>
-                                                </tr>
-                                                @for($i = 0; $i < count($l_outcomes); $i++) 
-                                                    <tr>
-                                                        <td style="width:5%">{{$i+1}}</td>
-                                                        <td>
-                                                            <b>{{$l_outcomes[$i]->clo_shortphrase}}</b><br>
-                                                            {{$l_outcomes[$i]->l_outcome}}
-
-                                                        </td>
-                                                    </tr>
-                                                @endfor
-
-                                            @endif
-
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>    
-                               
-                            <table style="margin-top:15px" class="table">
                                 <tr>
-                                    <th style="background-color: #999999;">Student Assessment Methods for {{$course->course_code}}{{$course->course_num}}</th>
+                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Student Assesment Methods</th>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Weight</th>
                                 </tr>
+                                @for($i = 0; $i < count($a_methods); $i++) 
+                                    <tr>
+                                        <td style="width:5%">{{$i+1}}</td>
+                                        <td>{{$a_methods[$i]->a_method}}</td>
+                                        <td>{{$a_methods[$i]->weight}}%</td>
+                                    </tr>
+                                @endfor
+
+                            @endif
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <table style="margin-top:15px;" class="table">
+                <tr>
+                    <th style="background-color: #999999;">{{$course->course_code}}{{$course->course_num}}: Teaching and Learning Activities</th>
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+                        <p>Teaching and Learning Activities description goes here.</p>
+
+                        <table class="table table-bordered table-sm mt-3">
+
+                            @if(count($l_activities)<1) 
                                 <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>Student assessment methods used in this course are listed below.</p>
-                                        <table class="table table-bordered table-sm  mt-3">
-
-                                            @if(count($a_methods)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no student assessment methods set for
-                                                    this course.</th>
-                                                </tr>
-
-                                            @else
-
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Student Assesment Methods</th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Weight</th>
-                                                </tr>
-                                                @for($i = 0; $i < count($a_methods); $i++) 
-                                                    <tr>
-                                                        <td style="width:5%">{{$i+1}}</td>
-                                                        <td>{{$a_methods[$i]->a_method}}</td>
-                                                        <td>{{$a_methods[$i]->weight}}%</td>
-                                                    </tr>
-                                                @endfor
-
-                                            @endif
-
-                                        </table>
-                                    </td>
+                                    <th style="background-color: #e3e3e3;">There are no teaching and learning activities set for this course.</th>
                                 </tr>
-                            </table>
-                               
-                            <table style="margin-top:15px" class="table">
+                            @else
+
                                 <tr>
-                                    <th style="background-color: #999999;">Teaching and Learning Activities for {{$course->course_code}}{{$course->course_num}}</th>
+                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Teaching and Learning Activities</th>
                                 </tr>
+                                @for($i=0; $i<count($l_activities); $i++) 
+                                    <tr>
+                                        <td style="width:5%">{{$i+1}}</td>
+                                        <td>{{$l_activities[$i]->l_activity}}</td>
+                                    </tr>
+
+                                @endfor
+
+                            @endif
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <table style="margin-top:15px; page-break-before: always;" class="table">
+                <tr>
+                    <th style="background-color: #999999;">{{$course->course_code}}{{$course->course_num}}: Curriculum Alignment Table</th>
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+
+                        <table class="table table-bordered table-sm mt-3">
+
+                            @if(count($l_outcomes)<1) 
                                 <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>Teaching and Learning Activities description goes here.</p>
-
-                                        <table class="table table-bordered table-sm mt-3">
-
-                                            @if(count($l_activities)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;">There are no teaching and learning activities set for this course.</th>
-                                                </tr>
-                                            @else
-
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Teaching and Learning Activities</th>
-                                                </tr>
-                                                @for($i=0; $i<count($l_activities); $i++) 
-                                                    <tr>
-                                                        <td style="width:5%">{{$i+1}}</td>
-                                                        <td>{{$l_activities[$i]->l_activity}}</td>
-                                                    </tr>
-
-                                                @endfor
-
-                                            @endif
-                                        </table>
-                                    </td>
+                                    <th style="background-color: #e3e3e3;" class="table-light">There are no course learning outcomes set for this course.</th>
                                 </tr>
-                            </table>
 
-                            <table style="margin-top:15px" class="table">
+                            @else
+
                                 <tr>
-                                    <th style="background-color: #999999;">Mapping of {{$course->course_code}}{{$course->course_num}} CLOs to Teaching and Learning Activities & Assessment Methods</th>
+                                    <th class="table-light"></th>
+                                    <th class="table-light">Course Learning Outcomes</th>
+                                    <th class="table-light">Student Assessment Method</th>
+                                    <th class="table-light">Teaching and Learning Activity</th>
                                 </tr>
-                                <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>By the end of the course, students are expected to learn the following outcomes.</p>
+                                @for($i = 0; $i < count($l_outcomes); $i++)                               
+                                    <tr>
+                                        <td style="width:5%" >{{$i+1}}</td>
+                                        <td>{{$l_outcomes[$i]->l_outcome}}</td>
+                                        <td>
+                                            @foreach($outcomeAssessments as $oa)
+                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
+                                                    {{$oa->a_method}}<br>
 
-                                        <table class="table table-bordered table-sm mt-3">
+                                                @endif
 
-                                            @if(count($pl_outcomes)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no program learning outcomes set for this course.</th>
-                                                </tr>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($outcomeActivities as $oa)
+                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
+                                                    {{$oa->l_activity}}<br>
 
-                                            @else
+                                                @endif
 
-                                            <tr>
-                                                <th class="table-light"></th>
-                                                <th class="table-light">Course Learning Outcomes</th>
-                                                <th class="table-light">Student Assessment Method</th>
-                                                <th class="table-light">Teaching and Learning Activity</th>
-                                            </tr>
-                                                @for($i = 0; $i < count($l_outcomes); $i++)                               
-                                                    <tr>
-                                                        <td style="width:5%" >{{$i+1}}</td>
-                                                        <td>{{$l_outcomes[$i]->l_outcome}}</td>
-                                                        <td>
-                                                            @foreach($outcomeAssessments as $oa)
-                                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
-                                                                    {{$oa->a_method}}<br>
-                
-                                                                @endif
-                
-                                                            @endforeach
-                                                        </td>
-                                                        <td>
-                                                            @foreach($outcomeActivities as $oa)
-                                                                @if($oa->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
-                                                                    {{$oa->l_activity}}<br>
-                
-                                                                @endif
-                
-                                                            @endforeach
-                
-                                                        </td>
-                                                    </tr>
-                                                @endfor
+                                            @endforeach
 
-                                            @endif
+                                        </td>
+                                    </tr>
+                                @endfor
 
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                                
-                            <table style="margin-top:15px" class="table">
-                                <tr>
-                                    <th style="background-color: #999999;">Program Learning Outcomes for: {{$program->program}}</th>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>Program learning outcomes are listed below.</p>
+                            @endif
 
-                                        <table class="table table-bordered table-sm mt-3">
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-                                            @if(count($pl_outcomes)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no program learning outcomes set for this course.</th>
-                                                </tr>
-
-                                            @else
-
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Program Learning Outcomes</th>
-                                                    @if(count($ploCategories)>0)
-                                                        <th style="background-color: #e3e3e3;" class="table-light">PLO Category</th>
-                                                    @endif
-                                                </tr>
-                                                @for($i = 0; $i < count($pl_outcomes); $i++) 
-                                                    <tr>
-                                                        <td style="width:5%">{{$i+1}}</td>
-                                                        <td>
-                                                            <b>{{$pl_outcomes[$i]->plo_shortphrase}}</b><br>
-                                                            {{$pl_outcomes[$i]->pl_outcome}}
-
-                                                        </td>
-                                                        @if(count($ploCategories)>0)
-                                                            @if(isset($pl_outcomes[$i]->category->plo_category))
-                                                                <td>{{$pl_outcomes[$i]->category->plo_category}}</td>
-                                                            @else
-                                                                <td>Uncategorised</td>
-                                                            @endif
-                                                        @endif
-                                                    </tr>
-                                                @endfor
-
-                                            @endif
-
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                                
-                            <table style="margin-top:15px" class="table">
-                                <tr>
-                                    <th style="background-color: #999999;">Mapping of CLOs to PLOs for {{$course->course_code}}{{$course->course_num}}</th>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        @if(count($mappingScales)>0)
-                                            <p>The following are the mapping scale levels used to indicate the degree to which a program-level learning outcome is addressed by a particular course outcome.</p>
-
-                                                
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style="background-color: #e3e3e3;" colspan="2">Mapping Scale</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($mappingScales as $ms)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div style="background-color:{{$ms->colour}}; height: 10px; width: 10px;"></div>
-                                                                            {{$ms->title}}<br>
-                                                                            ({{$ms->abbreviation}})
-                                                                        </td>
-                                                                        <td>
-                                                                            {{$ms->description}}
-                                                                         </td>
-
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                  
-                                        @else
-
-                                            <table class="table table-bordered table-sm">
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">There are no mapping scale levels set for this program.</th>
-                                                </tr>
-                                            </table>
-
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left: 24px; padding-right: 24px">
-                                        <p>This chart shows the alignment of course outcomes to program-level learning
-                                        outcomes. Program-level learning outcomes and the mapping scale are listed below
-                                        the chart.</p>
-
-                                        <table class="table table-bordered table-sm mt-3">
-
-                                            @if(count($outcomeMaps)<1) 
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Course learning outcomes have not been mapped to program learning outcomes for this course.</th>
-                                                </tr>
-
-                                            @else
-
-                                                <tr>
-                                                    <th style="background-color: #e3e3e3;" class="table-light">Course Outcomes</th>
-                                                    <th style="background-color: #e3e3e3;" class="table-light" colspan="{{count($pl_outcomes)}}">Program Learning Outcomes</th>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    @for($i = 0; $i < count($pl_outcomes); $i++) 
-                                                        <td style="">
-                                                            <span style="">
-                                                                @if(isset($pl_outcomes[$i]->plo_shortphrase))
-                                                                    {{$i+1}}.<br>
-                                                                    {{$pl_outcomes[$i]->plo_shortphrase}}
-                                                                @else
-                                                                    PLO {{$i+1}}
-                                                                @endif
-
-                                                            </span>
-                                                        </td>
-
-                                                    @endfor
-                                                </tr>
-
-                                                @for($i = 0; $i < count($l_outcomes); $i++) 
-                                                    <tr>
-                                                        <td style="max-width:0; height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                            @if(isset($l_outcomes[$i]->clo_shortphrase))
-                                                                {{$i+1}}. {{$l_outcomes[$i]->clo_shortphrase}}
-                                                            @else
-                                                                CLO {{$i+1}}
-                                                            @endif
-                                                        </td>
-
-                                                        @for($j = 0; $j < count($pl_outcomes); $j++) 
-                                                            @foreach ($outcomeMaps as $om)
-                                                                @if( $om->pl_outcome_id == $pl_outcomes[$j]->pl_outcome_id && $om->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
-                                                            
-                                                                    <td @foreach($mappingScales as $ms) @if($ms->abbreviation == $om->map_scale_value) style="background-color:{{$ms->colour}}" @endif @endforeach class="text-center align-middle" >
-                                                                        {{$om->map_scale_value}}
-                                                                    </td>
-
-                                                                @endif
-                                                            @endforeach
-
-                                                        @endfor
-                                                    </tr>
-                                                @endfor
-
-                                             @endif
-
-                                        </table>
-
-
-                                    </td>
-                                </tr>
-
-
-                            </table>
-                            
-                            
-                        </div>
-
+        <div>
+            <table style="margin-top:15px; page-break-before: always;" class="table">
+                <tr>
+                    @if($course->program_id == 1 ?? $course->program_id == 2 ?? $course->program_id == 3 )
+                        <th style="background-color: #999999;">BC {{$program->program}} (in lieu of PLOs)</th>
+                    @else 
+                        <th style="background-color: #999999;">{{$program->program}}: Program Learning Outcomes or Competencies</th>
+                    @endif
                     
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+                        <p>Program learning outcomes are listed below.</p>
 
-            
-       
+                        <table class="table table-bordered table-sm mt-3">
+
+                            @if(count($pl_outcomes)<1) 
+                                <tr>
+                                    <th style="background-color: #e3e3e3;" class="table-light">There are no program learning outcomes set for this course.</th>
+                                </tr>
+
+                            @else
+
+                                <tr>
+                                    <th style="background-color: #e3e3e3;" class="table-light"></th>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Program Learning Outcomes</th>
+                                    @if(count($ploCategories)>0)
+                                        <th style="background-color: #e3e3e3;" class="table-light">PLO Category</th>
+                                    @endif
+                                </tr>
+                                @for($i = 0; $i < count($pl_outcomes); $i++) 
+                                    <tr>
+                                        <td style="width:5%">{{$i+1}}</td>
+                                        <td>
+                                            <b>{{$pl_outcomes[$i]->plo_shortphrase}}</b><br>
+                                            {{$pl_outcomes[$i]->pl_outcome}}
+
+                                        </td>
+                                        @if(count($ploCategories)>0)
+                                            @if(isset($pl_outcomes[$i]->category->plo_category))
+                                                <td>{{$pl_outcomes[$i]->category->plo_category}}</td>
+                                            @else
+                                                <td>Uncategorised</td>
+                                            @endif
+                                        @endif
+                                    </tr>
+                                @endfor
+
+                            @endif
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="max-width:100%">       
+            <table style="margin-top:15px; page-break-before: always;" class="table">
+                <tr>
+                    <th style="background-color: #999999;">{{$course->course_code}}{{$course->course_num}}: Outcome Maps</th>
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+                        @if(count($mappingScales)>0)
+                            <p>The following are the mapping scale levels used to indicate the degree to which a program-level learning outcome is addressed by a particular course outcome.</p>
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #e3e3e3;" colspan="2">Mapping Scale</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($mappingScales as $ms)
+                                        <tr>
+                                            <td>
+                                                <div style="background-color:{{$ms->colour}}; height: 10px; width: 10px;"></div>
+                                                {{$ms->title}}<br>
+                                                ({{$ms->abbreviation}})
+                                            </td>
+                                            <td>
+                                                {{$ms->description}}
+                                                </td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                                    
+                        @else
+
+                            <table class="table table-bordered table-sm">
+                                <tr>
+                                    <th style="background-color: #e3e3e3;" class="table-light">There are no mapping scale levels set for this program.</th>
+                                </tr>
+                            </table>
+
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 24px; padding-right: 24px">
+                        <p>This chart shows the alignment of course outcomes to program-level learning outcomes (or Ministry Standards).</p>
+
+                        <table class="table table-bordered table-sm mt-3">
+
+                            @if(count($outcomeMaps)<1) 
+                                <tr>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Course learning outcomes have not been mapped to program learning outcomes for this course.</th>
+                                </tr>
+
+                            @else
+
+                                <tr>
+                                    <th style="background-color: #e3e3e3;" class="table-light">Course Outcomes</th>
+                                    <th style="background-color: #e3e3e3;" class="table-light" colspan="{{count($pl_outcomes)}}">Program Learning Outcomes</th>
+                                </tr>
+                                <tr>
+                                    <td style="height:50px"></td>
+                                    @for($i = 0; $i < count($pl_outcomes); $i++) 
+                                        <td>
+                                            PLO {{$i+1}}
+                                        </td>
+
+                                    @endfor
+                                </tr>
+
+                                @for($i = 0; $i < count($l_outcomes); $i++) 
+                                    <tr>
+                                        <td style="height:50px">
+                                            
+                                            CLO {{$i+1}}
+                                            
+                                        </td>
+
+                                        @for($j = 0; $j < count($pl_outcomes); $j++) 
+                                            @foreach ($outcomeMaps as $om)
+                                                @if( $om->pl_outcome_id == $pl_outcomes[$j]->pl_outcome_id && $om->l_outcome_id == $l_outcomes[$i]->l_outcome_id )
+                                            
+                                                    <td @foreach($mappingScales as $ms) @if($ms->abbreviation == $om->map_scale_value) style="background-color:{{$ms->colour}}" @endif @endforeach class="text-center align-middle" >
+                                                        {{$om->map_scale_value}}
+                                                    </td>
+
+                                                @endif
+                                            @endforeach
+
+                                        @endfor
+                                    </tr>
+                                @endfor
+
+                            @endif
+
+                        </table>
+
+
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>   
+        
+    </div>
     
 </body>
 

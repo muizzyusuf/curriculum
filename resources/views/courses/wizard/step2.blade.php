@@ -5,56 +5,40 @@
 <div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="mt-2 mb-3">
-                <h3>Course: {{$course->course_code}}{{$course->course_num}}</h3>
-                <h5>{{$course->course_title}}</h5>
-
-            </div>
-
-            <div class="alert alert-warning" role="alert">
-                ⚠️ Please complete the steps below to map this course!
-              </div>
+            @include('courses.wizard.header')
 
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step0', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>0</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step1', $course->course_id)}}"
+                            <td><a class="btn @if($lo_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step1', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>1</b> </a></td>
-                            <td><a class="btn btn-success" href="{{route('courseWizard.step2', $course->course_id)}}"
+                            <td><a class="btn btn-primary" href="{{route('courseWizard.step2', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>2</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step3', $course->course_id)}}"
+                            <td><a class="btn @if($la_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step3', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>3</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step4', $course->course_id)}}"
+                            <td><a class="btn @if($oAct < 1 && $oAss < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step4', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>4</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step5', $course->course_id)}}"
+                            <td><a class="btn @if($outcomeMaps < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step5', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>5</b> </a></td>
                             <td><a class="btn btn-secondary" href="{{route('courseWizard.step6', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>6</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step7', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>7</b></a></td>
                         </tr>
 
                         <tr>
-                            <td>General Information</td>
                             <td>Course Learning Outcomes</td>
                             <td>Student Assesment Methods</td>
                             <td>Teaching and Learning Activities</td>
                             <td>Course Outcome Mapping</td>
                             <td>Program Outcome Mapping</td>
                             <td>Course Summary</td>
-                            <td>Finish</td>
                         </tr>
                     </tbody>
                 </table>
@@ -68,8 +52,7 @@
             <div class="card">
 
                 <div class="card-body">
-                    <p class="form-text text-muted">On	this	page,	you	can	add,	edit	or	delete	student	assessment	methods	that	you	use	in	your	
-                        course.</p>
+                    <p class="form-text text-muted">Input all <a href="https://ctlt.ubc.ca/resources/webliography/assessmentevaluation/" target="_blank">assessment methods</a> of the course individually.</p>
 
                     <div id="admins">
                         <div class="row">
@@ -129,10 +112,42 @@
                                                                             <input list="a_methods" id="a_method" type="text" class="form-control @error('a_method') is-invalid @enderror" value="{{$a_method->a_method}}" name="a_method" required autofocus>
                                 
                                                                                 <datalist id="a_methods">
-                                                                                    <option value="Exam">Exam</option>
-                                                                                    <option value="Quiz">Quiz</option>
-                                                                                    <option value="Assignment">Assignment</option>
-                                                                                    <option value="Project">Project</option>
+                                                                                    <option value="Annotated bibliography">
+                                                                                    <option value="Assignment">
+                                                                                    <option value="Attendance">
+                                                                                    <option value="Brochure, poster">
+                                                                                    <option value="Case analysis">
+                                                                                    <option value="Debate">
+                                                                                    <option value="Diagram/chart">
+                                                                                    <option value="Dialogue">
+                                                                                    <option value="Essay">
+                                                                                    <option value="Exam">
+                                                                                    <option value="Fill in the blank test">
+                                                                                    <option value="Group discussion">
+                                                                                    <option value="Lab/field notes">
+                                                                                    <option value="Letter">
+                                                                                    <option value="Literature review">
+                                                                                    <option value="Mathematical problem">
+                                                                                    <option value="Materials and methods plan">
+                                                                                    <option value="Multimedia or slide presentation">
+                                                                                    <option value="Multiple-choice test">
+                                                                                    <option value="News or feature story">
+                                                                                    <option value="Oral report">
+                                                                                    <option value="Outline">
+                                                                                    <option value="Participation">
+                                                                                    <option value="Project">
+                                                                                    <option value="Project plan">
+                                                                                    <option value="Poem">
+                                                                                    <option value="Play">
+                                                                                    <option value="Quiz">
+                                                                                    <option value="Research proposal">
+                                                                                    <option value="Review of book, play, exhibit">
+                                                                                    <option value="Rough draft or freewrite">
+                                                                                    <option value="Social media post">
+                                                                                    <option value="Summary">
+                                                                                    <option value="Technical or scientific report">
+                                                                                    <option value="Term/research paper">
+                                                                                    <option value="Thesis statement">
                                                                                 </datalist>
                                 
                                                                                 @error('a_method')
@@ -146,10 +161,14 @@
                                                                         <div class="form-group row">
                                                                             <label for="weight" class="col-md-3 col-form-label text-md-right">Weight</label>
                                             
-                                                                            <div class="col-md-8">
+                                                                            <div class="input-group col-md-8">
                                                                                 <input id="weight" type="number"
                                                                                     class="form-control @error('weight') is-invalid @enderror" value="{{$a_method->weight}}" name="weight" min="1" max="100" required autofocus>
-                                            
+                                                                                
+                                                                                <div class="input-group-append">
+                                                                                    <div class="input-group-text">%</div>
+                                                                                </div>
+                                                                                
                                                                                 @error('weight')
                                                                                 <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $message }}</strong>
@@ -173,7 +192,11 @@
                                             </tr>
 
                                             @endforeach
-
+                                        
+                                            <tr>
+                                                <td><b>TOTAL</b></td>
+                                                <td><b>{{$totalWeight}}%</b></td>
+                                            </tr>
 
                                     @endif
                                 </table>
@@ -202,17 +225,51 @@
                                 <form method="POST" action="{{ action('AssessmentMethodController@store') }}">
                                     @csrf
                                     <div class="modal-body">
+                                        
                                         <div class="form-group row">
                                             <label for="a_method" class="col-md-3 col-form-label text-md-right">Assessment Method</label>
 
                                             <div class="col-md-8">
-                                                <input list="a_methods" id="a_method" type="text" class="form-control @error('a_method') is-invalid @enderror" name="a_method" required autofocus>
+                                                
+                                                <input list="a_methods1" id="a_method" type="text" class="form-control @error('a_method') is-invalid @enderror" name="a_method" placeholder="Choose from the dropdown list or type your own" required autofocus>
 
-                                                <datalist id="a_methods">
-                                                    <option value="Exam">Exam</option>
-                                                    <option value="Quiz">Quiz</option>
-                                                    <option value="Assignment">Assignment</option>
-                                                    <option value="Project">Project</option>
+                                                <datalist id="a_methods1">
+                                                    <option value="Annotated bibliography">
+                                                    <option value="Assignment">
+                                                    <option value="Attendance">
+                                                    <option value="Brochure, poster">
+                                                    <option value="Case analysis">
+                                                    <option value="Debate">
+                                                    <option value="Diagram/chart">
+                                                    <option value="Dialogue">
+                                                    <option value="Essay">
+                                                    <option value="Exam">
+                                                    <option value="Fill in the blank test">
+                                                    <option value="Group discussion">
+                                                    <option value="Lab/field notes">
+                                                    <option value="Letter">
+                                                    <option value="Literature review">
+                                                    <option value="Mathematical problem">
+                                                    <option value="Materials and methods plan">
+                                                    <option value="Multimedia or slide presentation">
+                                                    <option value="Multiple-choice test">
+                                                    <option value="News or feature story">
+                                                    <option value="Oral report">
+                                                    <option value="Outline">
+                                                    <option value="Participation">
+                                                    <option value="Project">
+                                                    <option value="Project plan">
+                                                    <option value="Poem">
+                                                    <option value="Play">
+                                                    <option value="Quiz">
+                                                    <option value="Research proposal">
+                                                    <option value="Review of book, play, exhibit">
+                                                    <option value="Rough draft or freewrite">
+                                                    <option value="Social media post">
+                                                    <option value="Summary">
+                                                    <option value="Technical or scientific report">
+                                                    <option value="Term/research paper">
+                                                    <option value="Thesis statement">
                                                 </datalist>
 
                                                 @error('a_method')
@@ -226,9 +283,13 @@
                                         <div class="form-group row">
                                             <label for="weight" class="col-md-3 col-form-label text-md-right">Weight</label>
             
-                                            <div class="col-md-8">
-                                                <input id="weight" type="number"
+                                            <div class="input-group col-md-8">
+                                                <input id="weight" type="number" step=".01"
                                                     class="form-control @error('weight') is-invalid @enderror" name="weight" min="1" max="100" required autofocus>
+
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">%</div>
+                                                </div>
             
                                                 @error('weight')
                                                 <span class="invalid-feedback" role="alert">
@@ -276,6 +337,15 @@
 
     </div>
 </div>
-</div>
-</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+  
+      $("form").submit(function () {
+        // prevent duplicate form submissions
+        $(this).find(":submit").attr('disabled', 'disabled');
+        $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+  
+      });
+    });
+  </script>
 @endsection

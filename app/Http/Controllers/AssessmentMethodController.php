@@ -45,6 +45,11 @@ class AssessmentMethodController extends Controller
             'a_method'=> 'required',
             'weight'=> 'required',
             ]);
+        
+        $totalWeight = AssessmentMethod::where('course_id', $request->input('course_id'))->sum('weight');
+        if($totalWeight + $request->input('weight') > 100){
+            return redirect()->route('courseWizard.step2', $request->input('course_id'))->with('error', 'The total weight of all assessments will exceed 100%');
+        }
 
         $am = new AssessmentMethod;
         $am->a_method = $request->input('a_method');
@@ -52,7 +57,7 @@ class AssessmentMethodController extends Controller
         $am->course_id = $request->input('course_id');
         
         if($am->save()){
-            $request->session()->flash('success', 'New student assessment method added');
+            $request->session()->flash('success', 'New student assessment method saved');
         }else{
             $request->session()->flash('error', 'There was an error adding the student assessment method');
         }
@@ -98,16 +103,24 @@ class AssessmentMethodController extends Controller
             'a_method'=> 'required',
             'weight'=> 'required',
             ]);
-
+        
         $am = AssessmentMethod::where('a_method_id', $a_method_id)->first();
+
+        $totalWeight = AssessmentMethod::where('course_id', $request->input('course_id'))->sum('weight');
+        if($totalWeight + $request->input('weight') - $am->weight > 100){
+            return redirect()->route('courseWizard.step2', $request->input('course_id'))->with('error', 'The total weight of all assessments will exceed 100%');
+        }
+
+        
         $am->a_method = $request->input('a_method');
         $am->weight = $request->input('weight');
-        $am->course_id = $request->input('course_id');
+        //$am->course_id = $request->input('course_id');
+        
         
         if($am->save()){
-            $request->session()->flash('success', 'New student assessment method added');
+            $request->session()->flash('success', 'Student assessment method updated');
         }else{
-            $request->session()->flash('error', 'There was an error adding the student assessment method');
+            $request->session()->flash('error', 'There was an error updating the student assessment method');
         }
         
         

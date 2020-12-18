@@ -16,7 +16,7 @@ class CreateLearningOutcomesTable extends Migration
         Schema::create('learning_outcomes', function (Blueprint $table) {
             $table->bigIncrements('l_outcome_id');
             $table->string('clo_shortphrase')->nullable();
-            $table->string('l_outcome');
+            $table->text('l_outcome');
             $table->unsignedBigInteger('course_id');
             $table->timestamps();
 

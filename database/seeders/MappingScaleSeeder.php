@@ -21,7 +21,7 @@ class MappingScaleSeeder extends Seeder
         $ms1->title = "Introduced";
         $ms1->abbreviation = "I";
         $ms1->description = "Key ideas, concepts or skills related to the learning outcome are demonstrated at an introductory level. Learning activities focus on basic knowledge, skills, and/or competencies and entry-level complexity.";
-        $ms1->colour = "#0065bd";
+        $ms1->colour = "#80bdff" ;
         $ms1->save();
 
         $ms2 = new MappingScale;
@@ -35,7 +35,7 @@ class MappingScaleSeeder extends Seeder
         $ms3->title = "Advanced";
         $ms3->abbreviation = "A";
         $ms3->description = "Students demonstrate the learning outcomes with a high level of independence, expertise and sophistication expected upon graduation. Learning activities focus on and integrate the use of content or skills in multiple.";
-        $ms3->colour = "#80bdff";
+        $ms3->colour = "#0065bd";
         $ms3->save();
 
         $msp1 = new MappingScaleProgram;

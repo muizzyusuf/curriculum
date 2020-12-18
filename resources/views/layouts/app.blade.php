@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('dist/js/jquery.smartWizard.js') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.5.1.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,17 +19,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('dist/css/smart_wizard_theme_arrows.css') }}" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('img/UBC-logo-2018-crest-blue-rgb72-resized.png') }}" alt="UBC crest logo">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -78,11 +81,11 @@
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <!-- {{-- @can('admin-privilege')
-                                        <a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                            User Management
+                                    @can('admin-privilege')
+                                        <a class="dropdown-item" href="{{ url('/admin') }}">
+                                            System Administrator
                                         </a>
-                                    @endcan --}} -->
+                                    @endcan
                                         
                                    
                                     
@@ -102,6 +105,7 @@
             <main class="py-4">
                 @include('partials.alerts')
                 @yield('content')
+                
             </main>
         </div>
     </div>

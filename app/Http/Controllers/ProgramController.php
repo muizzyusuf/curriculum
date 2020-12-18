@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\ProgramUser;
+use Response;
 
 class ProgramController extends Controller
 {
@@ -102,10 +103,7 @@ class ProgramController extends Controller
     public function show($id)
     {
         //
-        $program = Program::where('program_id',$id)->first();
-        $courses = Course::where('program_id', $id)->get();
-
-        return view('programs.show')->with('program', $program)->with('courses', $courses);
+    
         
     }
 
@@ -150,7 +148,7 @@ class ProgramController extends Controller
             $request->session()->flash('error', 'There was an error updating the program');
         }
 
-        return redirect()->route('programWizard.step1',$program->program_id);
+        return redirect()->back();
     }
 
     /**

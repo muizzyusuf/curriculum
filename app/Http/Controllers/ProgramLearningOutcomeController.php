@@ -56,12 +56,12 @@ class ProgramLearningOutcomeController extends Controller
         }
         
         if($plo->save()){
-            $request->session()->flash('success', 'New program learning outcome added');
+            $request->session()->flash('success', 'New program learning outcome saved');
         }else{
-            $request->session()->flash('error', 'There was an error Adding the program learning outcome');
+            $request->session()->flash('error', 'There was an error adding the program learning outcome');
         }
         
-        return redirect()->route('programWizard.step2', $request->input('program_id'));
+        return redirect()->route('programWizard.step1', $request->input('program_id'));
     }
 
     /**
@@ -117,7 +117,7 @@ class ProgramLearningOutcomeController extends Controller
             $request->session()->flash('error', 'There was an error updating the program learning outcome');
         }
 
-        return redirect()->route('programWizard.step2', $request->input('program_id'));
+        return redirect()->route('programWizard.step1', $request->input('program_id'));
     }
 
     /**
@@ -137,6 +137,6 @@ class ProgramLearningOutcomeController extends Controller
             $request->session()->flash('error', 'There was an error deleting the program learning outcome');
         }
 
-        return redirect()->route('programWizard.step2',$request->input('program_id'));
+        return redirect()->route('programWizard.step1',$request->input('program_id'));
 }
 }

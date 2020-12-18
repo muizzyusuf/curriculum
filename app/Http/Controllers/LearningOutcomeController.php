@@ -51,7 +51,7 @@ class LearningOutcomeController extends Controller
         $lo->course_id = $request->input('course_id');
         
         if($lo->save()){
-            $request->session()->flash('success', 'New course learning outcome added');
+            $request->session()->flash('success', 'New course learning outcome saved');
         }else{
             $request->session()->flash('error', 'There was an error adding the course learning outcome');
         }
@@ -76,9 +76,11 @@ class LearningOutcomeController extends Controller
      * @param  \App\Models\LearningOutcome  $learningOutcome
      * @return \Illuminate\Http\Response
      */
-    public function edit($learningOutcome)
+    public function edit( $l_outcome_id)
     {
         //
+        $lo = LearningOutcome::where('l_outcome_id', $l_outcome_id)->first();
+
     }
 
     /**

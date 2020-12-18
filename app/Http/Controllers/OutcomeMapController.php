@@ -43,27 +43,28 @@ class OutcomeMapController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
         $course_id = $request->input('course_id');
 
-        $l_outcomes = LearningOutcome::where('course_id', $course_id)->get();
+        $l_outcome = LearningOutcome::where('course_id', $course_id)->first();
         $course =  Course::where('course_id', $course_id)->first();
         $pl_outcomes = ProgramLearningOutcome::where('program_id', $course->program_id)->get();
 
         $arr = $request->input('map');
         
-        foreach($l_outcomes as $l_outcome){
-            
-            foreach($pl_outcomes as $pl_outcome){
+        foreach($pl_outcomes as $pl_outcome){
 
-                $outcomeMap = DB::table('outcome_maps')->updateOrInsert(
-                    ['pl_outcome_id' =>$pl_outcome->pl_outcome_id , 'l_outcome_id' => $l_outcome->l_outcome_id ],
-                    ['map_scale_value' => $arr[$l_outcome->l_outcome_id][$pl_outcome->pl_outcome_id]]
-                );    
-            }  
-        }
+            $outcomeMap = DB::table('outcome_maps')->updateOrInsert(
+                ['pl_outcome_id' =>$pl_outcome->pl_outcome_id , 'l_outcome_id' => $l_outcome->l_outcome_id ],
+                ['map_scale_value' => $arr[$l_outcome->l_outcome_id][$pl_outcome->pl_outcome_id]]
+            );    
+        }  
 
-        return redirect()->route('courseWizard.step5', $request->input('course_id'))->with('success', 'Your answers have been saved successfully.');
+        return redirect()->back()->with('success', 'Your answers have been saved successfully.');
+        
+        // return response()->json(["success" => true]); 
+
+
     }
 
     /**

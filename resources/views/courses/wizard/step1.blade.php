@@ -4,56 +4,40 @@
 <div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="mt-2 mb-3">
-                <h3>Course: {{$course->course_code}}{{$course->course_num}}</h3>
-                <h5>{{$course->course_title}}</h5>
-
-            </div>
-
-            <div class="alert alert-warning" role="alert">
-                ⚠️ Please complete the steps below to map this course!
-              </div>
+            @include('courses.wizard.header')
 
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step0', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>0</b> </a></td>
-                            <td><a class="btn btn-success" href="{{route('courseWizard.step1', $course->course_id)}}"
+                            <td><a class="btn btn-primary" href="{{route('courseWizard.step1', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>1</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step2', $course->course_id)}}"
+                            <td><a class="btn @if($am_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step2', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>2</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step3', $course->course_id)}}"
+                            <td><a class="btn @if($la_count < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step3', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>3</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step4', $course->course_id)}}"
+                            <td><a class="btn @if($oAct < 1 && $oAss < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step4', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>4</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step5', $course->course_id)}}"
+                            <td><a class="btn @if($outcomeMaps < 1) btn-secondary @else  btn-success @endif" href="{{route('courseWizard.step5', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>5</b> </a></td>
                             <td><a class="btn btn-secondary" href="{{route('courseWizard.step6', $course->course_id)}}"
                                     style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
                                     <b>6</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('courseWizard.step7', $course->course_id)}}"
-                                    style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;">
-                                    <b>7</b></a></td>
                         </tr>
 
                         <tr>
-                            <td>General Information</td>
                             <td>Course Learning Outcomes</td>
                             <td>Student Assesment Methods</td>
                             <td>Teaching and Learning Activities</td>
                             <td>Course Outcome Mapping</td>
                             <td>Program Outcome Mapping</td>
                             <td>Course Summary</td>
-                            <td>Finish</td>
                         </tr>
                     </tbody>
                 </table>
@@ -62,7 +46,9 @@
             <div class="card">
 
                 <div class="card-body">
-                    <p class="form-text text-muted">On	this	page,	you	can	add,	edit	or	delete	the	course learning	outcomes in	you	course.</p>
+                    <p class="form-text text-muted"> Input the <a href="https://ctl.ok.ubc.ca/teaching-development/classroom-practices/learning-outcomes/" target="_blank">course learning outcomes (CLOs)</a> or <a href="https://sph.uth.edu/content/uploads/2012/01/Competencies-and-Learning-Objectives.pdf" target="_blank">competencies</a> of the course individually.
+                        <strong>It is recommended that a course has 6 CLOs max</strong>.
+                    </p>
 
                     <div id="clo">
                         <div class="row">
@@ -71,14 +57,14 @@
 
                                     @if(count($l_outcomes)<1) 
                                         <tr class="table-active">
-                                            <th colspan="3">There are no course learning outcomes set for this course.</th>
+                                            <th colspan="3">There are no course learning outcomes or competencies set for this course.</th>
                                         </tr>
 
 
                                     @else
 
                                         <tr class="table-active">
-                                            <th colspan="2">Course Learning Outcomes</th>
+                                            <th colspan="2">Course Learning Outcomes or Competencies</th>
                                         </tr>
                                       
                                             @foreach($l_outcomes as $l_outcome)
@@ -88,7 +74,7 @@
                                                     <b>{{$l_outcome->clo_shortphrase}}</b><br>
                                                     {{$l_outcome->l_outcome}}
                                                 </td>
-                                                <td>
+                                                <td width="250px">
                                                     <form class="float-right ml-2" action="{{route('lo.destroy', $l_outcome->l_outcome_id)}}" method="POST">
                                                         @csrf
                                                         {{method_field('DELETE')}}
@@ -106,7 +92,7 @@
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editLearningOutcomeModalLabel">Edit Course Learning Outcome
+                                                                    <h5 class="modal-title" id="editLearningOutcomeModalLabel">Edit Course Learning Outcome or Competency
                                                                     </h5>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
@@ -146,7 +132,7 @@
                                                                                 @enderror
 
                                                                                 <small class="form-text text-muted">
-                                                                                    This is a short phrase in a few words summarising your CLO
+                                                                                    Having a short phrase helps with data visualization at the end of this process <strong>(4 words max)</strong>.
                                                                                   </small>
 
                                                                             </div>
@@ -189,7 +175,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addLearningOutcomeModalLabel">Add Course Learning Outcome
+                                    <h5 class="modal-title" id="addLearningOutcomeModalLabel">Add Course Learning Outcome or Competency
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -226,8 +212,8 @@
                                                 @enderror
 
                                                 <small class="form-text text-muted">
-                                                    This is a short phrase in a few words summarising your CLO
-                                                </small>
+                                                    Having a short phrase helps with data visualization at the end of this process <strong>(4 words max)</strong>.
+                                                </small> 
                                             </div>
                                         </div>
 
@@ -246,9 +232,6 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="{{route('courseWizard.step0', $course->course_id)}}">
-                        <button class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ General Information</button>
-                    </a>
                     
                     <a href="{{route('courseWizard.step2', $course->course_id)}}">
                         <button class="btn btn-sm btn-primary mt-3 col-3 float-right">Student Assessment Methods ➡</button>
@@ -262,5 +245,15 @@
 
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+  
+      $("form").submit(function () {
+        // prevent duplicate form submissions
+        $(this).find(":submit").attr('disabled', 'disabled');
+        $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+  
+      });
+    });
+  </script>
 @endsection

@@ -1,127 +1,164 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="mt-2 mb-3">
-                <h3>Program Project: {{$program->program}}</h3>
-                <h5>{{$program->faculty}}</h5>
-                <h6>{{$program->department}}</h6>
-                <h6 class="text-muted">{{$program->level}}</h6>
-
-                
-            </div>
-
-            <div class="alert alert-warning" role="alert">
-                ⚠️ Please complete the steps below to setup this program project!
-              </div>
+            @include('programs.wizard.header')
 
             <!-- progress bar -->
             <div>
                 <table class="table table-borderless text-center table-sm" style="table-layout: fixed; width: 100%">
-                    <tbody>
-                        <tr>
-                            <td><a class="btn btn-secondary" href="{{route('programWizard.step1', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>1</b> </a></td>
-                            <td><a class="btn btn-success" href="{{route('programWizard.step2', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>2</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('programWizard.step3', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>3</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('programWizard.step4', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>4</b> </a></td>
-                            <td><a class="btn btn-secondary" href="{{route('programWizard.step5', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>5</b> </a></td>
-                        </tr>
-                        <tr>
-                            <td>General Information</td>
-                            <td>Program Learning Outcomes</td>
-                            <td>Mapping Scale</td>
-                            <td>Courses</td>
-                            <td>Submit</td>
-                    </tbody>
+                    <tr>
+                        <td><a class="btn @if($ploCount<1) btn-secondary @else btn-success @endif" href="{{route('programWizard.step1', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>1</b> </a></td>
+                        <td><a class="btn btn-primary" href="{{route('programWizard.step2', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>2</b> </a></td>
+                        <td><a class="btn @if($courseCount<1) btn-secondary @else btn-success @endif" href="{{route('programWizard.step3', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>3</b> </a></td>
+                        <td><a class="btn btn-secondary" href="{{route('programWizard.step4', $program->program_id)}}" style="width: 30px; height: 30px; padding: 6px 0px; border-radius: 15px; text-align: center; font-size: 12px; line-height: 1.42857;"> <b>4</b> </a></td>
+                    </tr>
+                    <tr>
+                        <td>Program Learning Outcomes</td>
+                        <td>Mapping Scale</td>
+                        <td>Courses</td>
+                        <td>Begin Mapping Program</td>
+                    </tr>
                 </table>
             </div>
 
-            
-
             <div class="card">
-                
 
                 <div class="card-body">
-                    
-                    <p class="form-text text-muted">Program-level learning outcomes (PLOs) are the knowledge, skills and attributes that students
-                        are expected to attain by the end of a program of study. You can add, edit and delete program outcomes.
-                        You can also add program outcome categories to group outcomes that are similar. 
-                    </p>
                     <p class="form-text text-muted">
-                        <i>Note:</i> PLO categories are not required as part of a program project. If PLO Categories are created after creating PLOs, 
-                        to categorise the PLO click edit and select from the list of PLO categories to classify the PLO. If categories have been created 
-                        and you have not yet categorized each PLO, you will see a list of PLOs under <b>Uncategorized Outcomes</b>.
+                        The mapping scale is the scale that will be used to indicate the degree to which a program-level
+                        learning outcome is addressed by a course outcome, or the degree of alignment between the
+                        course outcome and program-level learning outcome.
                     </p>
 
-                    <div id="ploCateogry">
+                    <div class="row mb-3 container">
+                        <div class="float-left">
+                            <!-- Show default mapping scale button  -->
+                            <button type="button" class="btn btn-outline-secondary btn-sm mr-2" style="width: 250px" data-toggle="modal" data-target=".bd-example-modal-lg">Show Default Mapping Scale</button>
+                            
+                            <!-- Modal -->
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Default Mapping Scale</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Maping Scale</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td scope="row"><div style="background-color:#80bdff; height: 10px; width: 10px;"></div>Introduced (I)</td>
+                                                        <td>Key ideas, concepts or skills related to the learning outcome are demonstrated at an introductory level. 
+                                                            Learning activities focus on basic knowledge, skills, and/or competencies and entry-level complexity.</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row"><div style="background-color:#1aa7ff; height: 10px; width: 10px;"></div>Developing (D)</td>
+                                                        <td>Learning outcome is reinforced with feedback; students demonstrate the outcome at an increasing level of proficiency. 
+                                                            Learning activities concentrate on enhancing and strengthening existing knowledge and skills as well as expanding complexity.</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row"><div style="background-color:#0065bd; height: 10px; width: 10px;"></div>Advanced (A)</td>
+                                                        <td>Students demonstrate the learning outcomes with a high level of independence, expertise and sophistication expected upon graduation. 
+                                                            Learning activities focus on and integrate the use of content or skills in multiple.</td>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                          </div>
+                                          
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="float-left">
+
+
+                            <form action="{{route('mappingScale.default')}}" method="POST" >
+                                @csrf
+                                <input type="hidden" class="form-check-input" name="program_id" value="{{$program->program_id}}">
+                               
+                                <button type="submit" style="width:250px" class="btn btn-secondary btn-sm "> + Use the Default Mapping Scale Levels</button>
+                            </form>
+                        </div>
+                        
+                    </div>
+
+                    <div id="plos">
                         <div class="row">
                             <div class="col">
-                                <table class="table table-sm table-borderless">
+                                <table class="table table-borderless">
 
-                                    @if(count($ploCategories)<1)
+                                    @if(count($mappingScales)<1) 
                                         <tr class="table-active">
-                                            <th colspan="2">There are no program learning outcome categories set for this program project.</th>
+                                            <th colspan="2">There are no mapping scale levels set for this program project.</th>
                                         </tr>
-
 
                                     @else
 
                                         <tr class="table-active">
-                                            <th colspan="3">Program Learning Outcome Categories</th>
+                                            <th colspan="4">Mapping Scale</th>
                                         </tr>
-                                        <div class="card-body">
-                                            @foreach($ploCategories as $category)
+                                        
+                                            @foreach($mappingScales as $ms)
+                                            
                                             <tr>
                                                 
-                                                <td>
-                                                    {{$category->plo_category}}
+                                                <td style="width:20%">
+                                                    <div style="background-color:{{$ms->colour}}; height: 10px; width: 10px;"></div>
+                                                    {{$ms->title}}<br>
+                                                    ({{$ms->abbreviation}})
                                                 </td>
-                                                <td style="width:15%">
-                                                    <form action="{{route('ploCategory.destroy', $category->plo_category_id)}}"
-                                                        method="POST" class="float-right ml-2">
-                                                        @csrf
-                                                        {{method_field('DELETE')}}
-                                                        <input type="hidden" class="form-check-input" name="program_id"
-                                                            value={{$program->program_id}}>
-
-                                                        <button type="submit" style="width:60px"
-                                                            class="btn btn-danger btn-sm ">Delete</button>
-                                                    </form>
-
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm float-right"
-                                                        data-toggle="modal" style="width:60px; " data-target="#editCategoryModal{{$category->plo_category_id}}">
-                                                        Edit
-                                                    </button>
+                                                <td>
+                                                    {{$ms->description}}
+                                                </td>
+                                                <td style="width:5%" >
+                                                    @if($ms->map_scale_id !== 1 && $ms->map_scale_id !== 2 && $ms->map_scale_id !== 3 )
+                                                        <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px;" data-target="#editMSModal{{$ms->map_scale_id}}">
+                                                            Edit
+                                                        </button>
+                                                    @endif
 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="editCategoryModal{{$category->plo_category_id}}" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="editMSModal{{$ms->map_scale_id}}" tabindex="-1" role="dialog" aria-labelledby="editMSModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editCategoryModalLabel">Edit 
-                                                                        Program Learning Outcome Category</h5>
+                                                                    <h5 class="modal-title" id="editMSModalLabel">Edit Mapping Scale Level</h5>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
 
                                                                 <form method="POST"
-                                                                    action="{{ action('PLOCategoryController@update', $category->plo_category_id) }}">
+                                                                    action="{{ action('MappingScaleController@update', $ms->map_scale_id) }}">
                                                                     @csrf
                                                                     {{method_field('PUT')}}
 
                                                                     <div class="modal-body">
-
                                                                         <div class="form-group row">
-                                                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
+                                                                            <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
                                 
                                                                             <div class="col-md-8">
-                                                                            <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" value="{{$category->plo_category}}" autofocus>
+                                                                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$ms->title}}" required autofocus>
                                 
-                                                                                @error('category')
+                                                                                @error('title')
                                                                                 <span class="invalid-feedback" role="alert">
                                                                                     <strong>{{ $message }}</strong>
                                                                                 </span>
@@ -129,7 +166,81 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
+                                                                        <div class="form-group row">
+                                                                            <label for="abbreviation" class="col-md-4 col-form-label text-md-right">Abbreviation</label>
+                                
+                                                                            <div class="col-md-8">
+                                                                                <input id="abbreviation" type="text" class="form-control @error('abbreviation') is-invalid @enderror" name="abbreviation" value="{{$ms->abbreviation}}" maxlength="5" required autofocus>
+                                
+                                                                                @error('abbreviation')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="colour" class="col-md-4 col-form-label text-md-right">Colour</label>
+                                
+                                                                            <div class="col-md-8">
+                                                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" value="{{$ms->colour}}" required autofocus list="colours">
+                                                                                <datalist id="colours">
+                                                                                    <option value="#494444">
+                                                                                    <option value="#726f6f">
+                                                                                    <option value="#8b8989">
+                                                                                    <option value="#bbbbbb">
+                                                                                    <option value="#aaaaaa">
+
+                                                                                    <option value="#011f4b">
+                                                                                    <option value="#03396c">
+                                                                                    <option value="#005b96">
+                                                                                    <option value="#6497b1">
+                                                                                    <option value="#b3cde0">
+
+                                                                                    <option value="#991101">
+                                                                                    <option value="#c23210">
+                                                                                    <option value="#d65f59">
+                                                                                    <option value="#ff8ab3">
+                                                                                    <option value="#ffd0c2">
+
+                                                                                    <option value="#009c1a">
+                                                                                    <option value="#22b600">
+                                                                                    <option value="#26cc00">
+                                                                                    <option value="#7be382">
+                                                                                    <option value="#d2f2d4">
+
+                                                                                    <option value="#7f6b00">
+                                                                                    <option value="#ccac00">
+                                                                                    <option value="#ffd700">
+                                                                                    <option value="#ffeb7f">
+                                                                                    <option value="#fff7cc">
+                                                                                </datalist>
+
+                                                                                @error('colour')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+                                
+                                                                            <div class="col-md-8">
+                                                                                <textarea id="description" class="form-control" @error('description') is-invalid @enderror rows="3" name="description" required autofocus>{{$ms->description}}
+                                                                                </textarea>
+                                
+                                                                                @error('description')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <input type="hidden" class="form-check-input" name="program_id" value="{{$program->program_id}}">
 
                                                                     </div>
                                                                     <div class="modal-footer">
@@ -143,436 +254,22 @@
                                                
                                                     
                                                 </td>
+                                                <td style="width:5%" >
+                                                    <form action="{{route('mappingScale.destroy', $ms->map_scale_id)}}" method="POST" class="float-right ml-2">
+                                                        @csrf
+                                                        {{method_field('DELETE')}}
+                                                        <input type="hidden" class="form-check-input" name="program_id" value="{{$program->program_id}}">
+                                                        <button type="submit" style="width:60px" class="btn btn-danger btn-sm ">Delete</button>
+                                                    </form>
+                                                </td>
                                             </tr>
+
+
 
                                             @endforeach
 
-                                        </div>
+                                       
 
-                                        @endif
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal"
-                        data-target="#addCategoryModal">
-                        ＋ Add PLO Category
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog"
-                        aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addCategoryModalLabel">Add a Program Learning Outcome Category</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <form method="POST" action="{{ action('PLOCategoryController@store') }}">
-                                    @csrf
-
-                                    <div class="modal-body">
-
-                                        <div class="form-group row">
-                                            <label for="category" class="col-md-4 col-form-label text-md-right">Category Name</label>
-
-                                            <div class="col-md-8">
-                                                <input id="category" type="text" class="form-control @error('category') is-invalid @enderror" name="category" autofocus>
-
-                                                @error('category')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" class="form-check-input" name="program_id"
-                                            value={{$program->program_id}}>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary col-2 btn-sm"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary col-2 btn-sm">Add</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="card-body">
-
-                    <div id="plos">
-                        <div class="row">
-                            <div class="col">
-                                <table class="table table-sm table-borderless">
-
-                                    @if(count($plos)<1) 
-                                        <tr class="table-active">
-                                            <th colspan="2">There are no program learning outcomes for this program project.</th>
-                                        </tr>
-
-
-                                    @else
-                                        @if(count($ploCategories)<1)
-                                
-                                            <tr class="table-active">
-                                                <th colspan="3">Program Learning Outcome(s)</th>
-                                            </tr>
-                                            
-                                                @foreach($plos as $plo)
-                                                    <tr>
-                                                
-                                                        <td>
-                                                            <b>{{$plo->plo_shortphrase}}</b><br>
-                                                            {{$plo->pl_outcome}}
-                                                        </td>
-                                                        <td style="width:15%">
-                                                            <form action="{{route('plo.destroy', $plo->pl_outcome_id)}}" method="POST" class="float-right ml-2">
-                                                                @csrf
-                                                                {{method_field('DELETE')}}
-                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                <button type="submit" style="width:60px" class="btn btn-danger btn-sm ">Delete</button>
-                                                            </form>
-
-                                                            <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px; " data-target="#editPLOModal{{$plo->pl_outcome_id}}">
-                                                                Edit
-                                                            </button>
-
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="editPLOModal{{$plo->pl_outcome_id}}" tabindex="-1" role="dialog" aria-labelledby="editPLOModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="editPLOModalLabel">Edit Program Learning Outcome</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <form method="POST" action="{{ action('ProgramLearningOutcomeController@update', $plo->pl_outcome_id) }}">
-                                                                            @csrf
-                                                                            {{method_field('PUT')}}
-
-                                                                            <div class="modal-body">
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="plo" class="col-md-4 col-form-label text-md-right">Program Learning Outcome</label>
-
-                                                                                    <div class="col-md-8">
-                                                                                        <textarea id="plo" class="form-control" @error('plo') is-invalid @enderror rows="3" name="plo" required autofocus>{{$plo->pl_outcome}}
-                                                                                        </textarea>
-
-                                                                                        @error('plo')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="title" class="col-md-4 col-form-label text-md-right">Short Phrase</label>
-                                
-                                                                                    <div class="col-md-8">
-                                                                                        <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$plo->plo_shortphrase}}" autofocus>
-                                
-                                                                                        @error('title')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                
-                                                                                        <small class="form-text text-muted">
-                                                                                            This is a short phrase in a few words summarising your PLO
-                                                                                        </small>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary col-2 btn-sm" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                               
-                                                    
-                                                        </td>
-                                                    </tr>
-
-                                                @endforeach
-
-                                            
-                                        @else
-
-                                            <tr>
-                                                <th colspan="3">Program Learning Outcomes</th>
-                                            </tr>
-                                            @foreach($ploCategories as $category)
-                                            
-                                            <tr class="table-active">
-                                                <td colspan="3">{{$category->plo_category}}</td>
-                                            </tr>
-                                            
-                                                @foreach($plos as $plo)
-                                                    @if($plo->plo_category_id == $category->plo_category_id)
-
-                                                    <tr>
-                                                
-                                                        <td>
-                                                            <b>{{$plo->plo_shortphrase}}</b><br>
-                                                            {{$plo->pl_outcome}}
-                                                        </td>
-                                                        <td style="width:15%">
-                                                            <form action="{{route('plo.destroy', $plo->pl_outcome_id)}}" method="POST" class="float-right ml-2">
-                                                                @csrf
-                                                                {{method_field('DELETE')}}
-                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                <button type="submit" style="width:60px" class="btn btn-danger btn-sm ">Delete</button>
-                                                            </form>
-
-                                                            <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px; " data-target="#editPLOModal{{$plo->pl_outcome_id}}">
-                                                                Edit
-                                                            </button>
-
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="editPLOModal{{$plo->pl_outcome_id}}" tabindex="-1" role="dialog" aria-labelledby="editPLOModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="editPLOModalLabel">Edit Program Learning Outcome</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <form method="POST" action="{{ action('ProgramLearningOutcomeController@update', $plo->pl_outcome_id) }}">
-                                                                            @csrf
-                                                                            {{method_field('PUT')}}
-
-                                                                            <div class="modal-body">
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="plo" class="col-md-4 col-form-label text-md-right">Program Learning Outcome</label>
-
-                                                                                    <div class="col-md-8">
-                                                                                        <textarea id="plo" class="form-control" @error('plo') is-invalid @enderror rows="3" name="plo" required autofocus>{{$plo->pl_outcome}}
-                                                                                        </textarea>
-
-                                                                                        @error('plo')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="title" class="col-md-4 col-form-label text-md-right">Short Phrase</label>
-                                
-                                                                                    <div class="col-md-8">
-                                                                                        <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$plo->plo_shortphrase}}" autofocus>
-                                
-                                                                                        @error('title')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                
-                                                                                        <small class="form-text text-muted">
-                                                                                            This is a short phrase in a few words summarising your PLO
-                                                                                        </small>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                @if(count($ploCategories)>0)
-                                                                                    <div class="form-group row">
-                                                                                        <label for="category" class="col-md-4 col-form-label text-md-right">PLO Category</label>
-
-                                                                                        <div class="col-md-8">
-                                                
-                                                                                            <select class="custom-select" name="category" id="category" required autofocus>
-                                                                                                @foreach($ploCategories as $c)
-                                                                                                    @if($c->plo_category == $category->plo_category)
-                                                                                                        <option selected value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
-                                                                                                    @else
-                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
-                                                                                                    @endif
-                                                                                                @endforeach
-                                                                                                <option value="">None</option>
-                                                                                            </select>
-
-                                                                                            @error('category')
-                                                                                                <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
-                                                                                            @enderror
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endif
-
-                                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary col-2 btn-sm" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                               
-                                                    
-                                                        </td>
-                                                    </tr>
-                                                    @endif
-                                                @endforeach
-
-                                                <tr>
-                                                    <td colspan="3"><br></td>
-                                                </tr>
-
-                                           
-
-                                            @endforeach
-
-                                            <tr class="table-active ">
-                                                <th colspan="3">Uncategorised Outcomes</th>
-                                            </tr>
-                                            
-                                                @foreach($plos as $plo)
-                                                    @if($plo->plo_category_id == null)
-
-                                                    <tr>
-                                                
-                                                        <td>
-                                                            <b>{{$plo->plo_shortphrase}}</b><br>
-                                                            {{$plo->pl_outcome}}
-                                                        </td>
-                                                        <td>
-                                                            <form action="{{route('plo.destroy', $plo->pl_outcome_id)}}" method="POST" class="float-right ml-2">
-                                                                @csrf
-                                                                {{method_field('DELETE')}}
-                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                <button type="submit" style="width:60px" class="btn btn-danger btn-sm ">Delete</button>
-                                                            </form>
-
-                                                            <button type="button" class="btn btn-secondary btn-sm float-right" data-toggle="modal" style="width:60px; " data-target="#editPLOModal{{$plo->pl_outcome_id}}">
-                                                                Edit
-                                                            </button>
-
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="editPLOModal{{$plo->pl_outcome_id}}" tabindex="-1" role="dialog" aria-labelledby="editPLOModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="editPLOModalLabel">Edit Program Learning Outcome</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <form method="POST" action="{{ action('ProgramLearningOutcomeController@update', $plo->pl_outcome_id) }}">
-                                                                            @csrf
-                                                                            {{method_field('PUT')}}
-
-                                                                            <div class="modal-body">
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="plo" class="col-md-4 col-form-label text-md-right">Program Learning Outcome</label>
-
-                                                                                    <div class="col-md-8">
-                                                                                        <textarea id="plo" class="form-control" @error('plo') is-invalid @enderror rows="3" name="plo" required autofocus>{{$plo->pl_outcome}}
-                                                                                        </textarea>
-
-                                                                                        @error('plo')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-group row">
-                                                                                    <label for="title" class="col-md-4 col-form-label text-md-right">Short Phrase</label>
-                                
-                                                                                    <div class="col-md-8">
-                                                                                        <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$plo->plo_shortphrase}}" autofocus>
-                                
-                                                                                        @error('title')
-                                                                                            <span class="invalid-feedback" role="alert">
-                                                                                                <strong>{{ $message }}</strong>
-                                                                                            </span>
-                                                                                        @enderror
-                                
-                                                                                        <small class="form-text text-muted">
-                                                                                            This is a short phrase in a few words summarising your PLO
-                                                                                        </small>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                @if(count($ploCategories)>0)
-                                                                                    <div class="form-group row">
-                                                                                        <label for="category" class="col-md-4 col-form-label text-md-right">PLO Category</label>
-
-                                                                                        <div class="col-md-8">
-                                                
-                                                                                            <select class="custom-select" name="category" id="category" required autofocus>
-                                                                                                <option selected hidden disabled>Choose...</option>
-                                                                                                    @foreach($ploCategories as $c)
-                                                                                                        <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
-                                                                                                    @endforeach
-                                                                                                    <option value="">None</option>
-                                                                                            </select>
-                                                                                            
-                                                                                            @error('category')
-                                                                                                <span class="invalid-feedback" role="alert">
-                                                                                                    <strong>{{ $message }}</strong>
-                                                                                                </span>
-                                                                                            @enderror
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endif
-
-                                                                                <input type="hidden" class="form-check-input" name="program_id" value={{$program->program_id}}>
-
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary col-2 btn-sm" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-primary col-2 btn-sm">Save</button>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                    
-                                                        </td>
-                                                    </tr>
-                                                    @endif
-                                                @endforeach
-
-                                            
-
-                                        @endif
                                     @endif
                                 </table>
                             </div>
@@ -580,85 +277,118 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-sm col-2 mt-3 float-right" data-toggle="modal" data-target="#addPLOModal">
-                        ＋ Add PLO
+                    <button type="button" class="btn btn-primary btn-sm col-3 mt-3 float-right" data-toggle="modal"
+                        data-target="#addMSModal">
+                        ＋ Add My Own Mapping Scale Level
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="addPLOModal" tabindex="-1" role="dialog"
-                        aria-labelledby="addPLOModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="addMSModal" tabindex="-1" role="dialog"
+                        aria-labelledby="addMSModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addPLOModalLabel">Add a Program Learning Outcome</h5>
+                                    <h5 class="modal-title" id="addMSModalLabel">Add a Mapping Scale Level</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
-                                <form method="POST" action="{{ action('ProgramLearningOutcomeController@store') }}">
+                                <form method="POST" action="{{ action('MappingScaleController@store') }}">
                                     @csrf
 
                                     <div class="modal-body">
 
                                         <div class="form-group row">
-                                            <label for="plo" class="col-md-4 col-form-label text-md-right">Program Learning Outcome</label>
+                                            <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
 
                                             <div class="col-md-8">
-                                                <textarea id="plo" class="form-control" @error('plo') is-invalid @enderror rows="3" name="plo" required autofocus>
-                                                </textarea>
-
-                                                @error('plo')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="title" class="col-md-4 col-form-label text-md-right">Short Phrase</label>
-
-                                            <div class="col-md-8">
-                                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" autofocus>
+                                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" required autofocus>
 
                                                 @error('title')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
-
-                                                <small class="form-text text-muted">
-                                                    This is a short phrase in a few words summarising your PLO
-                                                </small>
                                             </div>
                                         </div>
 
-                                        @if(count($ploCategories)>0)
-                                            <div class="form-group row">
-                                                <label for="category" class="col-md-4 col-form-label text-md-right">PLO Category</label>
+                                        <div class="form-group row">
+                                            <label for="abbreviation" class="col-md-4 col-form-label text-md-right">Abbreviation</label>
 
-                                                <div class="col-md-8">
-                                                
-                                                    <select class="custom-select" name="category" id="category" required autofocus>
-                                                        <option selected hidden disabled>Choose...</option>
-                                                        @foreach($ploCategories as $c)
-                                                            <option value="{{$c->plo_category_id}}">{{$c->plo_category}}</option>
-                                                        @endforeach
-                                                        <option value="">None</option>
-                                                    </select>
+                                            <div class="col-md-8">
+                                                <input id="abbreviation" type="text" class="form-control @error('abbreviation') is-invalid @enderror" name="abbreviation" maxlength="5" required autofocus>
 
-                                                    @error('category')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
+                                                @error('abbreviation')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
-                                        @endif
+                                        </div>
 
-                                        <input type="hidden" class="form-check-input" name="program_id"
-                                            value={{$program->program_id}}>
+                                        <div class="form-group row">
+                                            <label for="colour" class="col-md-4 col-form-label text-md-right">Colour</label>
+
+                                            <div class="col-md-8">
+                                                <input id="colour" type="color" class="form-control @error('colour') is-invalid @enderror" name="colour" required autofocus list="colours">
+                                                <datalist id="colours">
+                                                    <option value="#494444">
+                                                    <option value="#726f6f">
+                                                    <option value="#8b8989">
+                                                    <option value="#bbbbbb">
+                                                    <option value="#aaaaaa">
+
+                                                    <option value="#011f4b">
+                                                    <option value="#03396c">
+                                                    <option value="#005b96">
+                                                    <option value="#6497b1">
+                                                    <option value="#b3cde0">
+
+                                                    <option value="#991101">
+                                                    <option value="#c23210">
+                                                    <option value="#d65f59">
+                                                    <option value="#ff8ab3">
+                                                    <option value="#ffd0c2">
+
+                                                    <option value="#009c1a">
+                                                    <option value="#22b600">
+                                                    <option value="#26cc00">
+                                                    <option value="#7be382">
+                                                    <option value="#d2f2d4">
+
+                                                    <option value="#7f6b00">
+                                                    <option value="#ccac00">
+                                                    <option value="#ffd700">
+                                                    <option value="#ffeb7f">
+                                                    <option value="#fff7cc">
+                                                </datalist>
+
+                                                @error('colour')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+
+                                            <div class="col-md-8">
+                                                
+                                                <textarea id="description" class="form-control" @error('description') is-invalid @enderror rows="3" name="description" required autofocus>
+                                                </textarea>
+
+                                                @error('description')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" class="form-check-input" name="program_id" value="{{$program->program_id}}">
 
                                     </div>
                                     <div class="modal-footer">
@@ -673,13 +403,12 @@
 
                 </div>
 
-                
                 <div class="card-footer">
                     <a href="{{route('programWizard.step1', $program->program_id)}}"><button
-                            class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ General Information</button></a>
+                            class="btn btn-sm btn-primary mt-3 col-3 float-left">⬅ Program Learning Outcomes</button></a>
 
                     <a href="{{route('programWizard.step3', $program->program_id)}}"><button
-                            class="btn btn-sm btn-primary mt-3 col-3 float-right">Mapping Scale ➡</button></a>
+                            class="btn btn-sm btn-primary mt-3 col-3 float-right">Courses ➡</button></a>
                 </div>
 
 
@@ -687,16 +416,19 @@
         </div>
 
 
-
-
-
-
-
-
-
-
     </div>
 </div>
-</div>
-</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+  
+      $("form").submit(function () {
+        // prevent duplicate form submissions
+        $(this).find(":submit").attr('disabled', 'disabled');
+        $(this).find(":submit").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+  
+      });
+    });
+  </script>
+
 @endsection

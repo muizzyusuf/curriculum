@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="mt-2 mb-3">
+                <a  href="{{ route('courses.index') }}"><button class="btn my-3 btn-primary btn-sm" style="width: 100px">Back ⮪</button></a>
                 <h2>Course Summary</h2>
                 <h5>Course: {{$course->course_code}}{{$course->course_num}} - {{$course->course_title}}</h5>
                 <h5>Program Project: {{$program->program}}</h5>
@@ -17,13 +18,13 @@
             <div class="card ">
 
                 <a href="{{route('courses.pdf', $course->course_id)}}">
-                    <button class="btn btn-sm btn-primary mt-3 mb-3 col-3 float-right mr-5"> Download PDF ⭳ </button>
+                    <button id="download" class="btn btn-sm btn-primary mt-3 mb-3 col-3 float-right mr-5"> Download PDF ⭳ </button>
                 </a>
 
                 <p class="ml-5 mr-5 form-text text-muted">You	can	review	and	download	the	answers	you	entered	during	the	process	of	mapping	
-                    the	course.	Based	on	this	review,	you	might	want	to	edit	the	
-                    information	you	supplied. To do this, go back to My Courses and select edit on the completed course. 
-                    </p>
+                    the	course.	Based	on	this	review,	you	might	want	to	revisit	some	steps	and	edit	the	
+                    information	you	supplied.
+                    You	can	also click finish and submit	your	summary	to	complete	the	mapping	of	your	course.</p>
 
 
 
@@ -31,7 +32,7 @@
 
                     
                     <div class="card-header font-weight-bold">
-                        Course Learning Outcomes for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Course Learning Outcomes/Competencies
                     </div>
                     
     
@@ -41,14 +42,14 @@
     
                             @if(count($l_outcomes)<1) 
                                 <tr>
-                                    <th class="table-light">There are no course learning outcomes set for this course.</th>
+                                    <th class="table-light">There are no course learning outcomes or competencies set for this course.</th>
                                 </tr>
     
                             @else
     
                                 <tr>
                                     <th class="table-light"></th>
-                                    <th class="table-light">Course Learning Outcomes</th>
+                                    <th class="table-light">Course Learning Outcomes or Competencies</th>
                                 </tr>
                                     @for($i = 0; $i < count($l_outcomes); $i++)                               
                                         <tr>
@@ -68,7 +69,7 @@
                     </div>
                 
                     <div class="card-header font-weight-bold">
-                        Student Assessment Methods for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Student Assessment Methods
                     </div>
                     
     
@@ -103,12 +104,12 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Teaching and Learning Activities for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Teaching and Learning Activities
                     </div>
     
     
                     <div class="card-body ml-5 mr-5">
-                        Teaching and Learning Activities description goes here.
+                        Teaching and Learning Activities used in this course are listed below
     
                         <table class="table table-bordered table-sm mt-3">
     
@@ -139,12 +140,12 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Mapping of {{$course->course_code}}{{$course->course_num}} CLOs to Teaching and Learning Activities & Assessment Methods 
+                        {{$course->course_code}}{{$course->course_num}}: Curriculum Alignment Table
                     </div>
     
     
                     <div class="card-body ml-5 mr-5">
-                        By the end of the course, students are expected to learn the following outcomes.
+                        
                         <table class="table table-bordered table-sm mt-3">
     
                             @if(count($l_outcomes)<1) 
@@ -193,7 +194,11 @@
                     </div>
     
                     <div class="card-header font-weight-bold">
-                        Program Learning Outcomes for: {{$program->program}}
+                        @if($course->program_id == 1 ?? $course->program_id == 2 ?? $course->program_id == 3 )
+                            BC {{$program->program}} (in lieu of PLOs)
+                        @else 
+                            {{$program->program}}: Program Learning Outcomes or Competencies
+                        @endif
                     </div>
     
                     <div class="card-body ml-5 mr-5 mt-3">
@@ -242,7 +247,7 @@
                     
     
                     <div class="card-header font-weight-bold">
-                        Mapping of CLOs to PLOs for {{$course->course_code}}{{$course->course_num}}
+                        {{$course->course_code}}{{$course->course_num}}: Outcome Maps
                     </div>
     
     
@@ -289,7 +294,7 @@
 
                         @endif
     
-                        This chart shows the alignment of course outcomes to program-level learning outcomes. Program-level learning outcomes and the mapping scale are listed below the chart.
+                        This chart shows the alignment of course outcomes to program-level learning outcomes (or Ministry Standards).
     
                         <table  class="table table-bordered table-sm mt-3">
     
@@ -352,11 +357,10 @@
                         </table>   
     
                     </div>
-    
+                    
                 </div>
 
-
-            </div>  
+            </div>    
 
         </div>
 
@@ -369,8 +373,5 @@
 
 
 </div>
-
-
-
 
 @endsection

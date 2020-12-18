@@ -56,7 +56,7 @@ class PLOCategoryController extends Controller
             $request->session()->flash('error', 'There was an error adding the plo category');
         }
         
-        return redirect()->route('programWizard.step2', $request->input('program_id'));
+        return redirect()->route('programWizard.step1', $request->input('program_id'));
     }
 
     /**
@@ -105,7 +105,7 @@ class PLOCategoryController extends Controller
             $request->session()->flash('error', 'There was an error updating the plo category');
         }
         
-        return redirect()->route('programWizard.step2', $request->input('program_id'));
+        return redirect()->route('programWizard.step1', $request->input('program_id'));
     }
 
     /**
@@ -125,7 +125,7 @@ class PLOCategoryController extends Controller
             $request->session()->flash('error', 'There was an error deleting the plo category');
         }
         
-        return redirect()->route('programWizard.step2', $request->input('program_id'));
+        return redirect()->route('programWizard.step1', $request->input('program_id'));
     }
 
     
